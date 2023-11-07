@@ -1,0 +1,47 @@
+<div class="container">
+  <h1>Productos en tiempo real</h1>
+  <table id="Productos" class="table">
+  </table>
+</div>
+<div class="container">
+  <h2>Agragr un producto</h2>
+  <!-- Formulario simple que enviará una petición POST -->
+  <form action="" method="post" id="formulario">
+    <div class="form-group">
+      <label for="title">Nombre:</label>
+      <input id="title" type="text" name="title" />
+    </div>
+    <div class="form-group">
+      <label for="description">Descripción:</label>
+      <input id="description" type="text" name="description" />
+    </div>
+    <div class="form-group">
+      <label for="price">Precio:</label>
+      <input id="price" type="text" name="price" />
+    </div>
+    <div class="form-group">
+      <label for="code">Código:</label>
+      <input id="code" type="text" name="code" />
+    </div>
+    <div class="form-group">
+      <label for="stock">Stock:</label>
+      <input id="stock" type="text" name="stock" />
+      <input type="submit" value="Save" onclick="Enviar()" />
+    </div>
+
+  </form>
+</div>
+<div class="container">
+  <h2>Eliminar un producto</h2>
+  <!-- Formulario simple que enviará una petición POST -->
+  <form action="" method="post" id="formulario">
+    <div class="form-group">
+      <label for="id">ID del producto a eliminar:</label>
+      <input id="id" type="text" name="id" />
+      <input type="submit" value="Save" onclick="Borrar()" />
+    </div>
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
