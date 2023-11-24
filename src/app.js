@@ -5,7 +5,9 @@ import {Server} from 'socket.io';
 import prodsRouter from './routes/products.routes.js';
 import cartRouter from './routes/carts.routes.js';
 import viewsRouter from './routes/views.routes.js';
-import ProductManager from './classes/ProductManager.js';
+import userRouter from './routes/users.routes.js';
+import ProductManager from './dao/ProductManager.js';
+import { initMongoDB } from './dao/Conexion.js';
 // Creación de variables
 const productsPath = "./src/data/productos.json";
 // Creación del Product Manager
@@ -14,6 +16,7 @@ const manager = new ProductManager(productsPath);
 // Configuración inicial
 const app = express()
 const PORT = 8080
+await initMongoDB();
 
 // Motor de plantillas
 app.engine('handlebars', handlebars.engine());
@@ -29,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', viewsRouter);
 app.use('/api/products', prodsRouter)
 app.use('/api/carts', cartRouter)
+app.use('/api/users',userRouter)
 
 // Configuraciónn del puerto 8080
 const httpServer = app.listen(PORT, () => {
