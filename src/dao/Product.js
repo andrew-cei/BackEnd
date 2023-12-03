@@ -1,12 +1,13 @@
 // Productos
 export default class Product{
-    constructor(Id, title, description, price, thumbnail, code, stock){
+    constructor(title, description, category ,price, thumbnails, code, stock, status){
         this.title = title;
         this.description = description;
+        this.category = category;
         this.price = price;
-        this.thumbnail = thumbnail;
+        this.thumbnails = thumbnails;
         this.code = code;
+        this.status = status;
         this.stock= stock;
-        this.id = Id;
     }
 }

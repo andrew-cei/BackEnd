@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Product from "../dao/Product.js";
-import ProductManager from '../dao/ProductManager.js';
+import ProductManager from '../dao/filesystem/ProductDao.js';
 // Creación de variables
 const viewsRouter = Router();
 const productsPath = "./src/data/productos.json";

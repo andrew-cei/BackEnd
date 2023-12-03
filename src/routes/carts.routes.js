@@ -1,42 +1,25 @@
 import { Router } from 'express';
-import CartManagerDB from '../dao/CartManagerDB.js';
+import * as controller from '../controllers/carts.controllers.js';
 // Creación de variables
 const cartRouter = Router();
-const cartPath = "./src/data/cart.json";
-// Creación del Cart Manager
-const manager = new CartManagerDB(cartPath)
 
+// Lectura de todos los carritos
+cartRouter.get('/', controller.getAllCarts)
 // Lectura de un carrito
-cartRouter.get('/:cid', async (req, res) => {
-    const {cid} = req.params;
-    //const cart = await manager.getCart(parseInt(cid));
-    const cart = await manager.getCart(cid);
-    if (cart)
-        res.status(200).json(cart.products);
-    else
-        res.status(400).send('No se ha creado carrito todavía');
-});
-
+cartRouter.get('/:cid', controller.getCart);
 // Creación del carrito
-cartRouter.post('/', async (req, res) => {
-    await manager.createCart()
-    res.status(200).send('Carrito creado');
-});
-
-
+cartRouter.post('/', controller.createCart);
 // Agregar producto al carrito
-cartRouter.post('/:cid/products/:pid', async (req, res) => {
-    const { cid, pid } = req.params;
-    //const cart = await manager.getCart(parseInt(cid))
-    const cart = await manager.getCart(cid)
-    console.log(cart)
-    if (cart) {
-        //await manager.addPorductToCart(parseInt(cid), parseInt(pid))
-        await manager.addPorductToCart(cid, pid)
-        res.status(200).send('Product Added')
-    } else {
-        res.status(400).send('There is no Any Cart Created Yet or This cart just not exist')
-    }
-});
+cartRouter.post('/:cid/product/:pid', controller.addProductToCart);
+// Actualizar productos del carrito
+cartRouter.put('/:cid', controller.updateProductsInCart);
+// Actualizar cantidad de producto en carrito
+cartRouter.put('/:cid/products/:pid', controller.updateQuantityProduct);
+// Borrar carrito
+cartRouter.delete('/:cid', controller.delCart);
+// Borrar todos los productos de un carrito
+cartRouter.delete('/:cid/products', controller.delAllProducts);
+// Borrar un producto de un carrito
+cartRouter.delete('/:cid/products/:pid',controller.delOneProduct);
 
 export default cartRouter;

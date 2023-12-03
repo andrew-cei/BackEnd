@@ -6,7 +6,11 @@ const cartsCollection = 'carts' // Nombre de la colección en DB
 const cartsSchema = new Schema({
     products: [
         {
-            type: String
+            p_id: String,
+            quantity: {
+                type: Number,
+                default: 1
+            }
         }
     ]
 })
