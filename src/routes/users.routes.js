@@ -1,67 +1,70 @@
-import {Router} from 'express';
-import {userModel} from '../dao/mongodb/models/user.model.js';
-
+import { Router } from 'express';
+import UserController from '../controllers/user.controllers.js';
+import { userModel } from '../dao/mongodb/models/user.model.js';
+const userController = new UserController();
 const userRouter = Router();
 
-userRouter.get('/', async (req,res)=>{
+userRouter.get('/', async (req, res) => {
     // Lectura de usuarios
-    try{
+    try {
         let users = await userModel.find();
-        res.send({result:'success', payload:users});
-    }catch(error){
-        console.log("No se pueden obtener los usuarios con mongoose"+error);
+        res.send({ result: 'success', payload: users });
+    } catch (error) {
+        console.log("No se pueden obtener los usuarios con mongoose" + error);
     }
 })
 
-userRouter.post('/', async (req,res)=>{
+userRouter.post('/', async (req, res) => {
     // Obtención de datos
-    let {first_name, last_name, email} = req.body;
+    let { first_name, last_name, email } = req.body;
     // Verificación de los datos
-    if(!first_name||!last_name||!email)
-    {
-        return res.send({status:"error",error:"Valores faltantes"});
+    if (!first_name || !last_name || !email) {
+        return res.send({ status: "error", error: "Valores faltantes" });
     }
     // Añadir el usuario
-    try{
+    try {
         let result = await userModel.create({
             first_name,
             last_name,
             email
         })
         // Usuario recién creado
-        res.send({status:"success",payload:result})
-    }catch(error){
-        console.log("No se puede crear el usuario con mongoose"+error);
+        res.send({ status: "success", payload: result })
+    } catch (error) {
+        console.log("No se puede crear el usuario con mongoose" + error);
     }
 })
 
-userRouter.put('/:uid', async(req,res)=>{
+userRouter.put('/:uid', async (req, res) => {
     // Obtención de usuario
-    let {uid} = req.params;
+    let { uid } = req.params;
     let userToReplace = req.body;
     // Verificación de datos
-    if(!userToReplace.first_name||!userToReplace.last_name||!userToReplace.email)
-    {
-        return res.send({status:"error",error:"Valores incompletos"})
+    if (!userToReplace.first_name || !userToReplace.last_name || !userToReplace.email) {
+        return res.send({ status: "error", error: "Valores incompletos" })
     }
     // Actualización de usuario
-    try{
-        let result = await userModel.updateOne({_id:uid},userToReplace)
-        res.send({status:"success",payload:result})
-    }catch(error){
-        console.log("No se puede actualizar el usuario con mongoose"+error);
+    try {
+        let result = await userModel.updateOne({ _id: uid }, userToReplace)
+        res.send({ status: "success", payload: result })
+    } catch (error) {
+        console.log("No se puede actualizar el usuario con mongoose" + error);
     }
 })
 
-userRouter.delete('/:uid', async(req,res)=>{
+userRouter.delete('/:uid', async (req, res) => {
     // Obtención de usuario
-    let {uid} = req.params;
-    try{
-        let result = await userModel.deleteOne({_id:uid})
-        res.send({status:"success",payload:result})
-    }catch(error){
-        console.log("No se puede borrar el usuario con mongoose"+error);
+    let { uid } = req.params;
+    try {
+        let result = await userModel.deleteOne({ _id: uid })
+        res.send({ status: "success", payload: result })
+    } catch (error) {
+        console.log("No se puede borrar el usuario con mongoose" + error);
     }
 })
+// Ruta hacia el registro de usuario
+userRouter.post('/register', userController.register);
 
+// Ruta hacia el login de usuario
+userRouter.post('/login', userController.login);
 export default userRouter;

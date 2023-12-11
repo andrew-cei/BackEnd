@@ -1,6 +1,9 @@
 <div class="container">
   <h1>Productos</h1>
 
+  <p>Hola {{firstName}} {{lastName}}</p>
+  <p>To rol es de: {{role}}</p>
+
   <table class="table">
     <tr>
       <th>ID</th>
@@ -12,7 +15,7 @@
     </tr>
     {{#each products}}
       <tr>
-        <td>{{this.id}}</td>
+        <td>{{this._id}}</td>
         <td>{{this.title}}</td>
         <td>{{this.description}}</td>
         <td>${{this.price}}</td>
@@ -22,3 +25,6 @@
     {{/each}}
   </table>
 </div>
+
+<h2>Salir del sistema</h2>
+<button onclick="location.href='/logout'">Salir</button>

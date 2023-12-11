@@ -1,6 +1,6 @@
 import {connect} from 'mongoose';
 
-const MONGO_URL = "mongodb+srv://andrewcei:s572i7TVIKEr8PfK@codercluster.xwoiiio.mongodb.net/?retryWrites=true&w=majority";
+export const MONGO_URL = "mongodb+srv://andrewcei:s572i7TVIKEr8PfK@codercluster.xwoiiio.mongodb.net/?retryWrites=true&w=majority";
 
 export const initMongoDB = async () => {
     try{
