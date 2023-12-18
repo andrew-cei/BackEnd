@@ -1,11 +1,25 @@
-<h1>Login</h1>
-<form action="/api/users/login" method="post">
-Email:
-<input type="email" name="email" id="email">
-Password:
-<input type="password" name="password" id="password">
-<input type="submit" Value="Ingresar">
-</form>
-
-<h2>¿Usuario nuevo?</h2>
-<button onclick="location.href='/register'">Ir al registro</button>
+<div class="container">
+  <h1>Login</h1>
+  <form action="/api/users/login" method="post">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        aria-describedby="emailHelp"
+        name="email"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" name="password"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Ingresar</button>
+  </form>
+  <h2>Inicio con GitHub</h2>
+  <button onclick="location.href='/api/users/register-github'" class="btn btn-primary" method="post">GitHub</button>
+  <h2>¿Usuario nuevo?</h2>
+  <button onclick="location.href='/register'" class="btn btn-primary">Ir al
+    registro</button>
+</div>

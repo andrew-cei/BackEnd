@@ -21,7 +21,7 @@ export default class ProductDaoDB{
     // Obtener todos los productos
     async getProducts(){
         try{
-            this.products = await productModel.find();
+            this.products = await productModel.find().lean();
             return this.products;
         }
         catch(error){
@@ -31,7 +31,7 @@ export default class ProductDaoDB{
     // Obtener un producto por ID
     async getProductById(id){
         try{
-            this.product = await productModel.findOne({_id:id});
+            this.product = await productModel.findOne({_id:id}).lean();
             if(this.product){
                 return this.product;
             }else{

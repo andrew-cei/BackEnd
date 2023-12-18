@@ -5,6 +5,10 @@ export default class UserServices {
     async findByEmail(email){
         return await userModel.findOne({email})
     }
+    // Encontrar un usuario por ID
+    async findById(id){
+        return await userModel.findOne({_id:id})
+    }    
     // Registrar usuario
     async register(user){
         try {
@@ -17,9 +21,9 @@ export default class UserServices {
         }
     }
     // Login de usuario
-    async login(email, password){
+    async login(email){
         try {
-            const userExist = await userModel.findOne({email, password});
+            const userExist = await userModel.findOne({email});
             if(!userExist) return false;
             else return userExist;
         } catch (error) {

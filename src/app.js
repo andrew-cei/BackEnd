@@ -1,4 +1,6 @@
 import express from 'express';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
 import session from 'express-session';
 import { __dirname } from './utils.js';
 import handlebars from 'express-handlebars';
@@ -13,6 +15,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import MongoSotre from 'connect-mongo';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
+import './config/github-strategy.js';
 // Creación de variables
 const productsPath = "./src/data/productos.json";
 const mongoStoreOptions = {
@@ -40,12 +43,15 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
-// Uso de JSON
+// Configuración de Middlewares
 app.use(express.json());
 app.use(cookieParser("CoderS3cR3tC0D3"));
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(session(mongoStoreOptions));
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Rutas principales
 app.use('/', viewsRouter);

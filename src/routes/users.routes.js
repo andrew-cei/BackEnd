@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controllers.js';
 import { userModel } from '../dao/mongodb/models/user.model.js';
+import passport from 'passport';
 const userController = new UserController();
 const userRouter = Router();
 
@@ -63,8 +64,35 @@ userRouter.delete('/:uid', async (req, res) => {
     }
 })
 // Ruta hacia el registro de usuario
-userRouter.post('/register', userController.register);
-
+userRouter.post('/register', passport.authenticate('register', { failureRedirect: '/register-error' }),
+    async (req, res) => {
+        res.redirect('/');
+    });
 // Ruta hacia el login de usuario
-userRouter.post('/login', userController.login);
+userRouter.post('/login', passport.authenticate('login', { failureRedirect: '/error-login' }), async (req, res) => {
+    if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials" })
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+        role: 'user'
+    }
+    res.redirect('/products');
+});
+// Ruta hacia el registro mediante GitHub
+userRouter.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }));
+// Callback URL
+userRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), (req,res)=>{
+    if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials" })
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: '',
+        age: '',
+        email: req.user.email,
+        role: 'user'
+    }
+    res.redirect('/products');
+});
+
 export default userRouter;

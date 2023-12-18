@@ -20,8 +20,8 @@ viewsRouter.get('/register', (req, res) => {
 // Perfil de usuario con productos
 viewsRouter.get('/products', validateLogIn , async (req, res) => {
     const products = await getAllProducts();
-    const { firstName, lastName, role } = req.session;
-    res.render('home', { products, firstName, lastName, role});
+    const { first_name, last_name, role } = req.session.user;
+    res.render('home', { products, first_name, last_name, role});
 })
 // Logout de usuario
 viewsRouter.get('/logout', (req, res) => {
