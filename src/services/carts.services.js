@@ -53,7 +53,6 @@ export const updateProductsInCart = async(cid, productos) => {
 export const updateQuantityProduct = async(cid, pid, quantity) => {
     try {
         const cart = await cartManager.updateQuantityProduct(cid, pid, quantity);
-        console.log(cart)
         if(!cart) return false;
         else return cart;  
     } catch (error) {

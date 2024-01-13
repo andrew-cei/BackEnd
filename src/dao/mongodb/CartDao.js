@@ -79,7 +79,7 @@ export default class CartDaoDB {
     // Borrar un producto del carrito
     async delOneProduct(cid, pid){
         try {
-            const cart = await cartsModel.updateOne({_id:cid},{$pull: {products: {p_id: pid}}});
+            const cart = await cartsModel.updateOne({_id:cid},{$pull: {products: {_id: pid}}});
             return cart;
         } catch (error) {
             console.log(error)

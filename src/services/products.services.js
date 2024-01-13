@@ -1,4 +1,3 @@
-import Product from "../dao/Product.js";
 import ProductDaoDB from "../dao/mongodb/ProductDao.js";
 
 const productManager = new ProductDaoDB();
@@ -21,10 +20,8 @@ export const getProductById = async (id) => {
     }
 }
 // Agregar un producto
-export const addProduct = async (object) => {
+export const addProduct = async (product) => {
     try {
-        const {title, description, code, price, status, stock, category, thumbnails} = object;
-        const product = new Product(title, description, category ,price, thumbnails, code, stock, status)
         const newProd = await productManager.addProduct(product);
         if(!newProd) return false;
         else return newProd;
@@ -33,10 +30,8 @@ export const addProduct = async (object) => {
     }
 }
 // Actualizar un producto por ID
-export const updateProduct = async (id, object) => {
+export const updateProduct = async (id, product) => {
     try {
-        const {title, description, code, price, status, stock, category, thumbnails} = object;
-        const product = new Product(title, description, category ,price, thumbnails, code, stock, status)
         const prodUpd = await productManager.updateProduct(id, product);
         if(!prodUpd) return false;
         else return prodUpd;        

@@ -3,90 +3,110 @@
         "id": 1,
         "title": "Pantalla",
         "description": "Pantalla de plasma",
-        "price": 300,
-        "thumbnail": "",
         "code": "SOY2035",
-        "stock": 50
+        "price": 300,
+        "status": false,
+        "stock": 50,        
+        "category": "Electronics",
+        "thumbnail": []
     },
     {
         "id": 2,
         "title": "Laptop",
         "description": "Laptop gamer",
-        "price": 800,
-        "thumbnail": "",
         "code": "HPADV",
-        "stock": 20
+        "price": 800,
+        "status": false,
+        "stock": 20,
+        "category": "Computers", 
+        "thumbnail": []        
     },
     {
         "id": 3,
         "title": "Cámara",
         "description": "Cámara fotográfica 4k",
-        "price": 200,
-        "thumbnail": "",
         "code": "CN450",
-        "stock": 100
+        "price": 200,
+        "status": false,
+        "stock": 100,
+        "category": "Electronics",
+        "thumbnail": []
     },
     {
         "id": 4,
         "title": "Ratón",
         "description": "Ratón gamer",
-        "price": 20,
-        "thumbnail": "",
         "code": "LG567",
-        "stock": 120
+        "price": 20,
+        "status": false,
+        "stock": 120,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 5,
         "title": "Ratón",
         "description": "Ratón de oficina",
-        "price": 15,
-        "thumbnail": "",
         "code": "LG560",
-        "stock": 100
+        "price": 15,
+        "status": false,
+        "stock": 100,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 6,
         "title": "Teclado",
         "description": "Teclado gamer",
-        "price": 50,
-        "thumbnail": "",
         "code": "TLC530",
-        "stock": 20
+        "price": 50,
+        "status": false,
+        "stock": 20,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 7,
         "title": "Teclado",
         "description": "Teclado de oficina",
-        "price": 40,
-        "thumbnail": "",
         "code": "tlc430",
-        "stock": 12
+        "price": 40,
+        "status": true,
+        "stock": 12,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 8,
         "title": "Tarjeta de video",
         "description": "Tarjeta de video gamer",
-        "price": 4800,
-        "thumbnail": "",
         "code": "RTX3060",
-        "stock": 10
+        "price": 4800,
+        "status": true,
+        "stock": 10,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 9,
         "title": "Tarjeta de video",
         "description": "Tarjeta de video para diseño",
-        "price": 5800,
-        "thumbnail": "",
         "code": "RTX3070",
-        "stock": 20
+        "price": 5800,
+        "status": true,
+        "stock": 20,
+        "category": "Computers", 
+        "thumbnail": []
     },
     {
         "id": 10,
         "title": "Tarjeta de audio",
         "description": "Tarjeta de audio Hi End",
-        "price": 1200,
-        "thumbnail": "",
         "code": "MOTU M4",
-        "stock": 65
+        "price": 1200,
+        "status": true,
+        "stock": 65,
+        "category": "Computers", 
+        "thumbnail": []
     }
 ]

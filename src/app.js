@@ -1,19 +1,21 @@
+// Bibliotecas propias de Express
 import express from 'express';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import session from 'express-session';
+import { Server } from 'socket.io';
 import { __dirname } from './utils.js';
 import handlebars from 'express-handlebars';
-import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
+import MongoSotre from 'connect-mongo';
+// Bibliotecas propias
+import './dao/mongodb/Connection.js';
 import prodsRouter from './routes/products.routes.js';
 import cartRouter from './routes/carts.routes.js';
 import viewsRouter from './routes/views.routes.js';
 import userRouter from './routes/users.routes.js';
 import ProductManager from './dao/filesystem/ProductDao.js';
-import './dao/mongodb/Connection.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-import cookieParser from 'cookie-parser';
-import MongoSotre from 'connect-mongo';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
 import './config/github-strategy.js';
 // Creación de variables
