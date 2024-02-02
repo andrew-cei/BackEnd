@@ -6,27 +6,38 @@
 <div class="container">
   <h2>Agragr un producto</h2>
   <!-- Formulario simple que enviará una petición POST -->
-  <form action="" method="post" id="formulario">
-    <div class="form-group">
-      <label for="title">Nombre:</label>
-      <input id="title" type="text" name="title" />
+  <form action="" onsubmit="return false;" id="formulario-agregar">
+    <div class="mb-3">
+      <label for="title" class="form-label">Nombre:</label>
+      <input id="title" type="text" name="title" class="form-control"/>
     </div>
-    <div class="form-group">
-      <label for="description">Descripción:</label>
-      <input id="description" type="text" name="description" />
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción:</label>
+      <input id="description" type="text" name="description" class="form-control"/>
     </div>
-    <div class="form-group">
-      <label for="price">Precio:</label>
-      <input id="price" type="text" name="price" />
+    <div class="mb-3">
+      <label for="code"class="form-label"></label>Código:</label>
+      <input id="code" type="text" name="code" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="price" class="form-label">Precio:</label>
+      <input id="price" type="text" name="price" class="form-control"/>
     </div>
-    <div class="form-group">
-      <label for="code">Código:</label>
-      <input id="code" type="text" name="code" />
+    <div class="mb-3">
+      <label for="status" class="form-label">Status:</label>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="status">
+        <option value="true">Disponible</option>
+        <option value="false">No disponible</option>
+</select>
     </div>
-    <div class="form-group">
-      <label for="stock">Stock:</label>
-      <input id="stock" type="text" name="stock" />
-      <input type="submit" value="Save" onclick="Enviar()" />
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoría:</label>
+      <input id="category" type="text" name="category" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="stock"class="form-label"></label>Stock:</label>
+      <input id="stock" type="text" name="stock" class="form-control"/>
+      <button type="submit" class="btn btn-primary" onclick="Enviar()">Ingresar</button>
     </div>
 
   </form>
@@ -34,11 +45,11 @@
 <div class="container">
   <h2>Eliminar un producto</h2>
   <!-- Formulario simple que enviará una petición POST -->
-  <form action="" method="post" id="formulario">
-    <div class="form-group">
-      <label for="id">ID del producto a eliminar:</label>
-      <input id="id" type="text" name="id" />
-      <input type="submit" value="Save" onclick="Borrar()" />
+  <form action="" onsubmit="return false;" id="formulario-borrar">
+    <div class="mb-3">
+      <label for="id" class="form-label"></label>ID del producto a eliminar:</label>
+      <input id="id" type="text" name="id" class="form-control"/>
+      <button type="submit" class="btn btn-primary" onclick="Borrar()">Ingresar</button>
     </div>
   </form>
 </div>

@@ -8,13 +8,15 @@ import { __dirname } from './utils.js';
 import handlebars from 'express-handlebars';
 import cookieParser from 'cookie-parser';
 import MongoSotre from 'connect-mongo';
+import { Command } from 'commander';
 // Bibliotecas propias
 import './dao/mongodb/Connection.js';
+import Product from './dao/Product.js';
+import ProductsServices from './services/products.services.js';
 import prodsRouter from './routes/products.routes.js';
 import cartRouter from './routes/carts.routes.js';
 import viewsRouter from './routes/views.routes.js';
 import userRouter from './routes/users.routes.js';
-import ProductManager from './dao/filesystem/ProductDao.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
 import './config/github-strategy.js';
@@ -32,12 +34,22 @@ const mongoStoreOptions = {
         maxAge: 600000
     }
 }
-// Creación del Product Manager
-const manager = new ProductManager(productsPath);
+
+// Configuración de commander
+const commander = new Command();
+commander
+    .option('-p <port>', 'port server', 8080)
+    .option('-m <mode>', 'mode server', 'dev')
+    .option('-db <database>', 'database', 'mongo')
+commander.parse();
+// Inicialización de parámetros
+const PORT = commander.opts().p;
+const mode = commander.opts().m;
+const db = commander.opts().Db;
+console.log(PORT, mode, db);
 
 // Configuración inicial
 const app = express()
-const PORT = 8080
 initMongoDB();
 
 // Motor de plantillas
@@ -69,17 +81,32 @@ const httpServer = app.listen(PORT, () => {
 
 // Creación del servidor con websockets
 const io = new Server(httpServer);
+const productsServices = new ProductsServices();
 
 io.on('connection', socket => {
     console.log("Nuevo cliente conectado");
-
-    socket.on('EnviarProducto', async data => {
-        const products = await manager.getProducts();
+    // Requerir lista de productos
+    socket.on('RequerirProductos', async data => {
+        console.log('data: ',data);
+        const products = await productsServices.getAllProducts();
         io.emit('ActualizaTabla', products)
     })
-
+    // Agregar un producto a la lista
+    socket.on('AgregarProducto', async data => {
+        const { title, description, code, price, status, stock, category, thumbnails } = data;
+        const product = new Product(title, description, category, price, thumbnails, code, stock, status);
+        await productsServices.addProduct(product);
+        const products = await productsServices.getAllProducts();
+        io.emit('ActualizaTabla', products)
+    })
+    // Borrar un producto de la lista
     socket.on('BorrarProducto', async data => {
-        const products = await manager.getProducts();
+        const {id} = data;
+        const isProduct = await productsServices.getProductById(id);
+        if (isProduct) {
+            await productsServices.deleteProduct(id);
+        }
+        const products = await productsServices.getAllProducts();
         io.emit('ActualizaTabla', products)
     })
 })

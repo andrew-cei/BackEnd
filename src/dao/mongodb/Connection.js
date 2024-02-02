@@ -1,6 +1,18 @@
 import {connect} from 'mongoose';
+import config from '../../../config.js';
 
-export const MONGO_URL = "mongodb+srv://andrewcei:s572i7TVIKEr8PfK@codercluster.xwoiiio.mongodb.net/?retryWrites=true&w=majority";
+export let MONGO_URL;
+
+switch (config.NODE_ENV) {
+    case 'dev':
+        MONGO_URL = config.MONGO_ATLAS_URL;
+        console.log("Mongo dev")
+        break;
+    default:
+        MONGO_URL = config.MONGO_LOCAL_URL;
+        console.log('Mongo local');
+        break;
+}
 
 export const initMongoDB = async () => {
     try{

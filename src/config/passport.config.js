@@ -1,10 +1,11 @@
-import passport from "passport";
 import local from 'passport-local';
-import UserServices from "../services/user.services.js";
+import passport from "passport";
+import UsersServices from "../services/users.services.js";
 import { createHash, isValidPassword } from '../utils.js';
 
-const userServices = new UserServices();
+const usersServices = new UsersServices();
 const LocalStrategy = local.Strategy;
+
 const initializePassport = () => {
     // Inicialización de la estrategia local
     passport.use('register', new LocalStrategy(
@@ -12,7 +13,7 @@ const initializePassport = () => {
             const { first_name, last_name, email, age } = req.body;
             try {
                 // Búsqueda y creación de usuario
-                let user = await userServices.findByEmail(username);
+                let user = await usersServices.findUserByEmail(username);
                 if (user) {
                     console.log('El usuario ya existe');
                     return done(null, false);
@@ -24,7 +25,7 @@ const initializePassport = () => {
                     age,
                     password: createHash(password)
                 }
-                let result = await userServices.register(newUser);
+                let result = await usersServices.createUser(newUser);
                 return done(null, result);
             } catch (error) {
                 return done('Error al obtener el usuario: ' + error);
@@ -37,13 +38,13 @@ const initializePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userServices.findById(id);
+        let user = await usersServices.findUserById(id);
         done(null, user);
     });
     // Estrategia de login
     passport.use('login', new LocalStrategy({ usernameField: 'email'}, async(username, password, done)=> {
     try {
-        const user = await userServices.findByEmail(username);
+        const user = await usersServices.findUserByEmail(username);
         if (!user) {
             console.log("User doesn't exist");
             return done(null, false);

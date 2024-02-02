@@ -1,6 +1,6 @@
 import { cartsModel } from './models/cart.model.js';
 
-export default class CartDaoDB {
+export default class CartsDaoDB {
     constructor(path){
         this.path = path;
         this.carts = [];

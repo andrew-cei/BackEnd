@@ -6,23 +6,24 @@ Client Secret: 8fc61133701f64f455bed66bd17e715be67c04ee
 
 import { Strategy as GithubStrategy } from "passport-github2";
 import passport from 'passport';
-import UserServices from "../services/user.services.js";
-const userServices = new UserServices();
+import UsersServices from "../services/users.services.js";
+const usersServices = new UsersServices();
 
 const strategyOptions = {
     clientID: 'Iv1.0565a3a14597c7b5',
     clientSecret: '8fc61133701f64f455bed66bd17e715be67c04ee',
-    callbackURL: 'http://localhost:8080/api/users/github'
+    callbackURL: 'http://localhost:8080/github'
 }
 
 const registerOrLogin = async (accesToken, refreshToken, profile, done) => {
     // console.log(profile);
-    const email = profile._json.email;
-    const user = await userServices.findByEmail(email);
-    if(user) return done(null, user);
-    const newUser = await userServices.register({
-        first_name : profile._json.name,
-        email,
+    const emailGitHub = profile._json.url;
+    const nameGitHub = profile._json.name;
+    const userGitHub = await usersServices.findUserByEmail(emailGitHub);
+    if(userGitHub) return done(null, userGitHub);
+    const newUser = await usersServices.createUser({
+        first_name : nameGitHub,
+        email: emailGitHub,
         isGitHub: true
     })
     return done(null, newUser);

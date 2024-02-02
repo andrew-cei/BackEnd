@@ -1,35 +1,30 @@
+// Bibliotecas propias de Express
+import passport from 'passport';
 import { Router } from 'express';
-import Product from "../dao/Product.js";
-import ProductManager from '../dao/filesystem/ProductDao.js';
 import { validateLogIn } from '../middlewares/validateMiddleware.js';
-import { getAllProducts } from '../services/products.services.js';
+// Bibliotecas propias
+import ViewsController from '../controllers/views.controller.js';
 // Creación de variables
 const viewsRouter = Router();
-const productsPath = "./src/data/productos.json";
-// Creación del Product Manager
-const manager = new ProductManager(productsPath);
+
+const viewsController = new ViewsController();
 
 // Acceso a login
-viewsRouter.get('/', async (req, res) => {
-    res.render('login');
-})
+viewsRouter.get('/', viewsController.loginGet);
 // Registro de usuario
-viewsRouter.get('/register', (req, res) => {
-    res.render('register');
-})
+viewsRouter.get('/register', viewsController.registerGet)
 // Perfil de usuario con productos
-viewsRouter.get('/products', validateLogIn , async (req, res) => {
-    const products = await getAllProducts();
-    const { first_name, last_name, role } = req.session.user;
-    res.render('home', { products, first_name, last_name, role});
-})
+viewsRouter.get('/products', validateLogIn , viewsController.profile);
 // Logout de usuario
-viewsRouter.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (!err) res.redirect('/');
-        else res.send({ status: 'Logout ERROR', body: err });
-    })
-})
+viewsRouter.get('/logout', viewsController.logoutGet);
+// Ruta hacia el registro de usuario
+viewsRouter.post('/register', passport.authenticate('register', { failureRedirect: '/register-error' }), viewsController.registerPost);
+// Ruta hacia el login de usuario
+viewsRouter.post('/login', passport.authenticate('login', { failureRedirect: '/error-login' }), viewsController.loginPost);
+// Ruta hacia el registro mediante GitHub
+viewsRouter.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }));
+// Callback URL
+viewsRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), viewsController.gitHubGet);
 
 // Error al registrar
 viewsRouter.get('/register-error', (req, res) => {
@@ -40,20 +35,8 @@ viewsRouter.get('/error-login', (req, res) => {
     res.render('error-login');
 })
 // Productos en tiempo real
-viewsRouter.get('/realtimeproducts', (req, res) => {
+viewsRouter.get('/realtimeproducts', validateLogIn, (req, res) => {
     res.render('realTimeProducts')
-})
-// Agregar producto en tiempo real
-viewsRouter.post('/realtimeproducts', async (req, res) => {
-    const { id, title, description, price, thumbnail, code, stock } = req.body;
-    console.log(id)
-    if (id!==undefined) {
-        await manager.deleteProduct(parseInt(id));
-    } else {
-        const lastId = await manager.getLastId();
-        const prod = new Product(lastId + 1, title, description, price, thumbnail, code, stock);
-        await manager.addProduct(prod);
-    }
 })
 
 export default viewsRouter;

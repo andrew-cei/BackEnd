@@ -1,19 +1,19 @@
 import { Router } from "express";
-import Product from "../dao/Product.js";
-import * as controller from "../controllers/products.controller.js";
+import ProductsController from "../controllers/products.controller.js";
 
  // Creación de variables
-const prodsRouter = Router();
+const productsRouter = Router();
+const productsController = new ProductsController();
 
 // Lectura de todos los productos
-prodsRouter.get('/', controller.getAllProducts)
+productsRouter.get('/', productsController.getAllProducts)
 // Lectura de un solo producto por id
-prodsRouter.get('/:id', controller.getProductById)
+productsRouter.get('/:id', productsController.getProductById)
 // Agregar un nuevo producto
-prodsRouter.post('/', controller.addProduct)
+productsRouter.post('/', productsController.addProduct)
 // Actualizar producto
-prodsRouter.put('/:id', controller.updateProduct)
+productsRouter.put('/:id', productsController.updateProduct)
 // Borrar producto
-prodsRouter.delete('/:id', controller.deleteProduct)
+productsRouter.delete('/:id', productsController.deleteProduct)
 
-export default prodsRouter;
+export default productsRouter;

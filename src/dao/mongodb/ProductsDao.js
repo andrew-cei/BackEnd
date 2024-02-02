@@ -1,7 +1,7 @@
 import {productModel} from './models/product.model.js';
 
 // Manejador de productos
-export default class ProductDaoDB{
+export default class ProductsDaoDB{
     constructor(path){
         this.path = path;
         this.product = null;
