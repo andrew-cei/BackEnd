@@ -10,7 +10,7 @@ userRouter.get('/', validateLogIn ,usersController.getAllUsers);
 // Ruta para obtener un usuario
 userRouter.get('/:uid', validateLogIn, usersController.getUserById);
 // Ruta para crear usuario
-userRouter.post('/', validateLogIn, usersController.createUser);
+userRouter.post('/', usersController.createUser);
 // Actualización de usuario
 userRouter.put('/:uid', validateLogIn, usersController.updateUser)
 // Borrado de un usuario

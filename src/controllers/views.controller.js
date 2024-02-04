@@ -41,7 +41,7 @@ export default class ViewsController{
             last_name: req.user.last_name,
             age: req.user.age,
             email: req.user.email,
-            role: 'user',
+            role: user.role,
             cart: cart._id
         }
         res.redirect('/products');
