@@ -1,3 +1,4 @@
+<!-- Encabezado -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">My Ecommerce</a>
@@ -9,25 +10,36 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/products">Inicio</a>
         </li>
+        {{#if admin}}
         <li class="nav-item">
           <a class="nav-link" href="/realtimeproducts">Realtime Products</a>
         </li>
+        {{/if}}
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <a class="nav-link disabled" aria-disabled="true" id="counter">0</a>
         </li>        
         <li class="nav-item">
-          <a class="nav-link" href="#"><img src="/img/carrito.png" alt="Carrito de compras"></a>
+          <img src="/img/carrito.png" alt="Carrito de compras">
         </li>
       </ul>
+        <button class="btn btn-outline-primary" type="submit" onclick="location.href='/logout'">Salir</button>    
     </div>
   </div>
 </nav>
 
+<!-- Tabla de productos -->
+
 <div class="container">
   <h1>Productos en tiempo real</h1>
+  <p>Hola {{first_name}} {{last_name}}</p>
+  <p>To rol es de: {{role}}</p>
   <table id="Productos" class="table">
   </table>
 </div>
+
+<!-- Agregar productos solo Admin-->
+
+{{#if admin}}
 <div class="container">
   <h2>Agragr un producto</h2>
   <!-- Formulario simple que enviará una petición POST -->
@@ -78,6 +90,7 @@
     </div>
   </form>
 </div>
+{{/if}}
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

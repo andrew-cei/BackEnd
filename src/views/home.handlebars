@@ -1,3 +1,4 @@
+<!-- Encabezado -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">My Ecommerce</a>
@@ -16,12 +17,15 @@
           <a class="nav-link disabled" aria-disabled="true" id="counter">{{ total }}</a>
         </li>        
         <li class="nav-item">
-          <a class="nav-link" href="#"><img src="/img/carrito.png" alt="Carrito de compras"></a>
+          <img src="/img/carrito.png" alt="Carrito de compras">
         </li>
       </ul>
+        <button class="btn btn-outline-primary" type="submit" onclick="location.href='/logout'">Salir</button>    
     </div>
   </div>
 </nav>
+
+<!-- Tabla de productos -->
 
 <div class="container">
   <h1>Productos</h1>
@@ -34,37 +38,97 @@
         <th>ID</th>
         <th>Título</th>
         <th>Descripción</th>
+        <th>Categoría</th>
         <th>Precio</th>
         <th>Código</th>
         <th>Stock</th>
+        {{#if admin}}
+        <th>Editar</th>
+        {{else}}
         <th>Carrito</th>
+        {{/if}}
+        {{#if admin}}
+        <th>Borrar</th>
+        {{/if}}
       </tr>
     </thead>
     {{#each products}}
       <tbody>
-        <tr>
-          <td>{{this._id}}</td>
-          <td>{{this.title}}</td>
-          <td>{{this.description}}</td>
-          <td>${{this.price}}</td>
-          <td>{{this.code}}</td>
-          <td>{{this.stock}}</td>
-          <td><button type="button" class="btn btn-light" onclick="addProduct('{{../cart}}','{{this._id}}')">Agregar</button></td>
+        <tr id="{{ this._id }}">
+          <td>{{ this._id }}</td>
+          <td>{{ this.title }}</td>
+          <td>{{ this.description }}</td>
+          <td>{{ this.category }}</td>
+          <td>${{ this.price }}</td>
+          <td>{{ this.code }}</td>
+          <td>{{ this.stock }}</td>
+          {{#if ../admin}}
+          <td><button type="button" class="btn btn-secondary" onclick="editProduct('{{this._id}}')">Editar</button></td>
+          {{else}}
+          <td><button type="button" class="btn btn-light" onclick="addProductToCart('{{../cart}}','{{this._id}}')">Agregar</button></td>
+          {{/if}}
+          {{#if ../admin}}
+          <td><button type="button" class="btn btn-danger" onclick="deleteProduct('{{this._id}}')">Borrar</button></td>
+          {{/if}}
         </tr>
       </tbody>
     {{/each}}
   </table>
+
+<!-- Sección para realizar compra -->
+
+  {{#unless admin}}
   <h2>Realizar compra</h2>
   <button
     onclick="buyProducts('{{cart}}')"
     class="btn btn-primary"
   >Comprar</button>
-  <h2>Salir del sistema</h2>
-  <button
-    onclick="location.href='/logout'"
-    class="btn btn-primary"
-  >Salir</button>
+  {{/unless}}
+
+<!-- Agregar o actualizar producto -->
+{{#if admin}}
+<div class="container">
+  <h2 id="form_title">Agregar un producto</h2>
+  <!-- Formulario simple que enviará una petición POST -->
+  <form action="" onsubmit="return false;" id="formulario-agregar">
+    <div class="mb-3">
+      <label for="title" class="form-label">Nombre:</label>
+      <input id="title" type="text" name="title" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción:</label>
+      <input id="description" type="text" name="description" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="code"class="form-label"></label>Código:</label>
+      <input id="code" type="text" name="code" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="price" class="form-label">Precio:</label>
+      <input id="price" type="text" name="price" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="status" class="form-label">Status:</label>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="status">
+        <option value="true">Disponible</option>
+        <option value="false">No disponible</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoría:</label>
+      <input id="category" type="text" name="category" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="stock"class="form-label"></label>Stock:</label>
+      <input id="stock" type="text" name="stock" class="form-control"/>
+      <button type="submit" class="btn btn-primary" onclick="updateProduct()" id="sbm-btn">Agregar</button>
+    </div>
+
+  </form>
 </div>
+{{/if}}
+
+<!-- Lógica de programación -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/fetchApi.js"></script>

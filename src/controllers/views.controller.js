@@ -58,7 +58,8 @@ export default class ViewsController{
         const { first_name, last_name, role, cart } = req.session.user;        
         const products = await productsService.getAllProducts();
         const total = await this.totalProducts(cart);
-        res.render('home', { products, first_name, last_name, role, cart, total});
+        const admin = role === 'admin';
+        res.render('home', { products, first_name, last_name, role, cart, total, admin});
     }
     // Render de la página de registro
     registerGet = (req, res) => {

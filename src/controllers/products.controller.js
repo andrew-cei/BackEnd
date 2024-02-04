@@ -27,11 +27,17 @@ export default class productsController {
     // Añadir un producto
     addProduct = async (req, res, next) => {
         try {
-            const { title, description, code, price, status, stock, category, thumbnails } = req.body;
-            const product = new Product(title, description, category, price, thumbnails, code, stock, status);
-            const newProd = await productsServices.addProduct(product);
-            if (!newProd) res.status(404).json({ msg: "Error al crear el producto" });
-            else res.status(200).json(newProd);
+            let products;
+            const newProds = [];
+            !Array.isArray(req.body) ? products = [req.body]: products = req.body;
+            for(let i=0; i < products.length; i++) {
+                let { title, description, code, price, status, stock, category, thumbnails } = products[i];
+                let product = new Product(title, description, category, price, thumbnails, code, stock, status);
+                let newProd = await productsServices.addProduct(product);
+                newProds.push(newProd);
+            }
+            if (!newProds) res.status(404).json({ msg: "Error al crear el producto" });
+            else res.status(200).json(newProds);
         } catch (error) {
             next(error.message);
         }

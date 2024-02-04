@@ -36,8 +36,10 @@ viewsRouter.get('/error-login', (req, res) => {
     res.render('error-login');
 })
 // Productos en tiempo real
-viewsRouter.get('/realtimeproducts', validateLogIn, validateAdmin,(req, res) => {
-    res.render('realTimeProducts')
+viewsRouter.get('/realtimeproducts', validateLogIn, (req, res) => {
+    const { first_name, last_name, role } = req.session.user;        
+    const admin = role === 'admin';
+    res.render('realTimeProducts', { first_name, last_name, role, admin});
 })
 
 export default viewsRouter;
