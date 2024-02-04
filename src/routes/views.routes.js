@@ -2,6 +2,7 @@
 import passport from 'passport';
 import { Router } from 'express';
 import { validateLogIn } from '../middlewares/validateMiddleware.js';
+import { validateAdmin } from '../middlewares/validateAdmin.js';
 // Bibliotecas propias
 import ViewsController from '../controllers/views.controller.js';
 // Creación de variables
@@ -35,7 +36,7 @@ viewsRouter.get('/error-login', (req, res) => {
     res.render('error-login');
 })
 // Productos en tiempo real
-viewsRouter.get('/realtimeproducts', validateLogIn, (req, res) => {
+viewsRouter.get('/realtimeproducts', validateLogIn, validateAdmin,(req, res) => {
     res.render('realTimeProducts')
 })
 
