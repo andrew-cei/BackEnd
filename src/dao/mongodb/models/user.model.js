@@ -29,6 +29,10 @@ const userSchema = new Schema({
         type: String,
         default: 'user'
     },
+    cart: {
+        type: String,
+        default: null
+    },
     isGitHub: {
         type: Boolean,
         default: false

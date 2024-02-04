@@ -5,7 +5,7 @@ const ticketCollection = 'tickets' // Nombre de la colección en DB
 // Construcción del esquema
 const ticketSchema = new Schema({
     code: {
-        type: String,
+        type: Number,
         require: true,
         unique: true        
     },

@@ -17,7 +17,6 @@ export default class CartsController {
             // Revisión por cada producto
             cart.products.forEach(async (product) => {
                 const pid = product._id;
-                const price = parseInt(product.price);
                 const quantity = parseInt(product.quantity);
                 const stockProduct = await productService.getProductById(pid);
                 // Verificación de Stock
@@ -45,7 +44,7 @@ export default class CartsController {
                 code: generatedCode,
                 purchase_datetime: new Date(),
                 amount: totalAmount,
-                purchaser: req.session.email
+                purchaser: req.session.user.email
             }
             // Guardado del ticket
             if (totalAmount != 0) {
