@@ -20,6 +20,7 @@ import userRouter from './routes/users.routes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
 import './config/github-strategy.js';
+import { addDevLogger, addProdLogger } from './logger.js';
 // Creación de variables
 const productsPath = "./src/data/productos.json";
 const mongoStoreOptions = {
@@ -47,6 +48,9 @@ const PORT = commander.opts().p;
 const mode = commander.opts().m;
 const db = commander.opts().Db;
 console.log(PORT, mode, db);
+// Selección del logger, dev o prod
+let addLogger = null;
+mode === 'dev' ? addLogger = addDevLogger : addLogger = addProdLogger;
 
 // Configuración inicial
 const app = express()
@@ -66,6 +70,7 @@ app.use(session(mongoStoreOptions));
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(addLogger);
 
 // Rutas principales
 app.use('/', viewsRouter);

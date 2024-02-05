@@ -6,15 +6,17 @@ import { validateAdmin } from "../middlewares/validateAdmin.js";
 const productsRouter = Router();
 const productsController = new ProductsController();
 
+// Módulo de Mocking
+productsRouter.get('/mockingproducts', productsController.getMocking);
 // Lectura de todos los productos
-productsRouter.get('/',  validateAdmin, productsController.getAllProducts)
+productsRouter.get('/',  validateAdmin, productsController.getAllProducts);
 // Lectura de un solo producto por id
-productsRouter.get('/:id', validateAdmin, productsController.getProductById)
+productsRouter.get('/:id', validateAdmin, productsController.getProductById);
 // Agregar un nuevo producto
-productsRouter.post('/', validateAdmin, productsController.addProduct)
+productsRouter.post('/', validateAdmin, productsController.addProduct);
 // Actualizar producto
-productsRouter.put('/:id', validateAdmin, productsController.updateProduct)
+productsRouter.put('/:id', validateAdmin, productsController.updateProduct);
 // Borrar producto
-productsRouter.delete('/:id', validateAdmin, productsController.deleteProduct)
+productsRouter.delete('/:id', validateAdmin, productsController.deleteProduct);
 
 export default productsRouter;

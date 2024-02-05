@@ -1,5 +1,6 @@
 import Product from "../dao/Product.js";
 import ProductsServices from "../services/products.services.js"
+import { generateProduct } from "../utils.js";
 
 const productsServices = new ProductsServices();
 
@@ -74,6 +75,18 @@ export default class productsController {
             const delProd = await productsServices.deleteProduct(id);
             if (!delProd) res.status(404).json({ msg: `Error al borrar el producto ${id}` });
             else res.status(200).json(delProd);
+        } catch (error) {
+            next(error.message);
+        }
+    }
+    // Módulo de Mocking
+    getMocking = (req, res, next) => {
+        try {
+            const products = [];
+            for(let i=0; i < 100; i++){
+                products.push(generateProduct());
+            }
+            res.status(200).send({status: 'success', payload: products});     
         } catch (error) {
             next(error.message);
         }

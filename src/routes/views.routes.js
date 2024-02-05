@@ -12,6 +12,8 @@ const viewsController = new ViewsController();
 
 // Acceso a login
 viewsRouter.get('/', viewsController.loginGet);
+// Prueba del logger
+viewsRouter.get('/loggerTest', viewsController.loggerTest);
 // Registro de usuario
 viewsRouter.get('/register', viewsController.registerGet)
 // Perfil de usuario con productos

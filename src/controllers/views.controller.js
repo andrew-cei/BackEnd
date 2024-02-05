@@ -9,14 +9,22 @@ const productsService = new ProductsService();
 
 export default class ViewsController{
     // CallBack de GitHub
-    gitHubGet = (req,res)=>{
+    gitHubGet = async (req,res)=>{
         if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials" })
+        const user = await usersServices.findUserByEmail(req.user.email);
+        let cart = await cartsServices.getCart(user.cart);
+        if (user.cart === null || !cart){
+            // Si el usuario no tiene carro, se crea uno
+            cart = await cartsServices.createCart();
+            await usersServices.updateUser(user._id, {cart: cart._id.toString()});
+        }        
         req.session.user = {
             first_name: req.user.first_name,
             last_name: '',
             age: '',
             email: req.user.email,
-            role: 'user'
+            role: 'user',
+            cart: cart._id
         }
         res.redirect('/products');
     }
@@ -73,9 +81,21 @@ export default class ViewsController{
     totalProducts = async (cid) => {
         let total = 0;
         const userCart = await cartsServices.getCart(cid);
+        console.log(userCart)
         userCart.products.forEach( (product) => {
             total = total + product.quantity;
         })
         return total;
+    }
+    // Prueba del logger
+    loggerTest = (req, res) => {
+        console.log('Hola')
+        req.logger.fatal('Error Fatal');
+        req.logger.error('Error');
+        req.logger.warning('Warining');
+        req.logger.info('Info');
+        req.logger.http('Http')
+        req.logger.debug('Debug');
+        res.status(200).json({msg:'Pruebas realizadas'});
     }
 }
