@@ -11,6 +11,7 @@ import MongoSotre from 'connect-mongo';
 import { Command } from 'commander';
 // Bibliotecas propias
 import './dao/mongodb/Connection.js';
+import mailRouter from './routes/email.routes.js';
 import Product from './dao/Product.js';
 import ProductsServices from './services/products.services.js';
 import prodsRouter from './routes/products.routes.js';
@@ -74,9 +75,10 @@ app.use(addLogger);
 
 // Rutas principales
 app.use('/', viewsRouter);
-app.use('/api/products', prodsRouter)
-app.use('/api/carts', cartRouter)
-app.use('/api/users', userRouter)
+app.use('/api', mailRouter);
+app.use('/api/products', prodsRouter);
+app.use('/api/carts', cartRouter);
+app.use('/api/users', userRouter);
 app.use(errorHandler);
 
 // Configuraciónn del puerto 8080

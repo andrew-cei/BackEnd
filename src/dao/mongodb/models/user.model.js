@@ -36,6 +36,10 @@ const userSchema = new Schema({
     isGitHub: {
         type: Boolean,
         default: false
+    },
+    lastRecovery: {
+        type: Date,
+        default: null
     }
 })
 

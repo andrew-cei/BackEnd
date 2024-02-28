@@ -1,0 +1,12 @@
+<div class="container">
+  <h1>Escribe tu nueva contraseña</h1>
+  <p>{{first_name}} {{last_name}}</p>
+  <form action="/changePass" method="post">
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" name="password"/>
+      <input type="hidden" name="email" value="{{email}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>

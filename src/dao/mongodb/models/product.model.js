@@ -12,6 +12,10 @@ const productSchema = new Schema({
     stock: Number,
     category: String,
     thumbnail: [],
+    owner: {
+        type: String,
+        default: 'admin'
+    }
 })
 
 // Exporta el modelo

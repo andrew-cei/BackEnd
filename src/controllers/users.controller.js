@@ -84,7 +84,23 @@ export default class UsersController {
         let { uid } = req.params;
         try {
             const result = await usersServices.deleteUser(uid);
-            res.send({ status: "success", payload: result })
+            res.send({ status: "success", payload: result });
+        } catch (error) {
+            next(error.message);
+        }
+    }
+    // Cambiar rol de usuario
+    changeRole = async (req, res,next) => {
+        try {
+            const { uid } = req.params;
+            const user = await usersServices.findUserById(uid);
+            if(user.role === 'user'){
+                const result = await usersServices.updateUser(uid, {role: 'premium'});
+                res.send({status: "success", payload: result});
+            }else{
+                const result = await usersServices.updateUser(uid, {role: 'user'});
+                res.send({status: "success", payload: result});
+            }
         } catch (error) {
             next(error.message);
         }

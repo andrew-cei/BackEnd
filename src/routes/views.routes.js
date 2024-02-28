@@ -15,7 +15,15 @@ viewsRouter.get('/', viewsController.loginGet);
 // Prueba del logger
 viewsRouter.get('/loggerTest', viewsController.loggerTest);
 // Registro de usuario
-viewsRouter.get('/register', viewsController.registerGet)
+viewsRouter.get('/register', viewsController.registerGet);
+// Regenerar contraseña vista
+viewsRouter.get('/recover', viewsController.recoverGet);
+// Regenerar contraseña envío de correo
+viewsRouter.post('/recover', viewsController.recoverPost);
+// Generar nueva contraseña vista
+viewsRouter.get('/changePass/:email', viewsController.changePassGet);
+// Generar nueva constraseña en base de datos
+viewsRouter.post('/changePass', viewsController.changePassPost);
 // Perfil de usuario con productos
 viewsRouter.get('/products', validateLogIn , viewsController.profile);
 // Logout de usuario

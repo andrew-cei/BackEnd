@@ -2,6 +2,9 @@
 import UserServices from '../services/users.services.js';
 import CartsServices from '../services/carts.services.js';
 import ProductsService from '../services/products.services.js';
+import { transporter } from '../services/email.service.js';
+import config from '../../config.js';
+import { createHash, isValidPassword } from '../utils.js';
 
 const usersServices = new UserServices();
 const cartsServices = new CartsServices();
@@ -76,6 +79,58 @@ export default class ViewsController{
     // Registro de usuario
     registerPost = async (req, res) => {
         res.redirect('/');
+    }
+    // Render de la página de regeneración de contraseña
+    recoverGet = (req, res) => {
+        res.render('recover');
+    }
+    // Regeneración de contraseña envío de email
+    recoverPost = async (req, res) => {
+        const { email } = req.body;
+        const user = await usersServices.findUserByEmail(email);
+        if (user){
+            const { _id } = user;
+            const date = new Date().getTime();
+            const hour = 3600000;
+            await usersServices.updateUser(_id, {lastRecovery: date + hour});
+            const mailOptions = {
+                from: config.USER,
+                to: user.email,
+                subject: "Recuperación de contraseña",
+                html: `
+                <p>Puedes generar una nueva contraseña al presionar el botón</p>
+                <a href='http://localhost:8080/changePass/${user.email}'>Regenerar contraseña</a>
+                `
+            }
+            const response = await transporter.sendMail(mailOptions);
+            console.log(response);
+            res.status(200).redirect('/');
+        } else{
+            res.json({msg: 'Cuenta no encontrada'});
+        }
+    }
+    // Formulario de cambio de contraseña
+    changePassGet = async (req, res) => {
+        const { email } = req.params;
+        const user = await usersServices.findUserByEmail(email);
+        if(user.lastRecovery > Date.now()){
+            const { first_name, last_name } = user;
+            res.render('changePass', { first_name, last_name, email});
+        } else {
+            res.redirect('/recover');
+        }
+    }
+    // Actualización de contraseña en base de datos
+    changePassPost = async (req, res) => {
+        const { email, password } = req.body;
+        const user = await usersServices.findUserByEmail(email);
+        if(!isValidPassword(user, password)){
+            const { _id } = user;
+            await usersServices.updateUser(_id, {password: createHash(password)});
+            res.redirect('/');
+        } else {
+            res.json({msg: 'Esa contraseña ya se está utilizando'});
+        }
     }
     // Cálculo del total de productos
     totalProducts = async (cid) => {

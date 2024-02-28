@@ -15,5 +15,7 @@ userRouter.post('/', usersController.createUser);
 userRouter.put('/:uid', validateLogIn, usersController.updateUser)
 // Borrado de un usuario
 userRouter.delete('/:uid', validateLogIn, usersController.deleteUser);
+// Ruta para cambiar rol de usuario
+userRouter.put('/premium/:uid', usersController.changeRole);
 
 export default userRouter;
