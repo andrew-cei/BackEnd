@@ -9,14 +9,14 @@ const productsController = new ProductsController();
 // Módulo de Mocking
 productsRouter.get('/mockingproducts', productsController.getMocking);
 // Lectura de todos los productos
-productsRouter.get('/',  validateAdmin, productsController.getAllProducts);
+productsRouter.get('/', productsController.getAllProducts);
 // Lectura de un solo producto por id
-productsRouter.get('/:id', validateAdmin, productsController.getProductById);
+productsRouter.get('/:id', productsController.getProductById);
 // Agregar un nuevo producto
-productsRouter.post('/', validateAdmin, productsController.addProduct);
+productsRouter.post('/', productsController.addProduct);
 // Actualizar producto
-productsRouter.put('/:id', validateAdmin, productsController.updateProduct);
+productsRouter.put('/:id', productsController.updateProduct);
 // Borrar producto
-productsRouter.delete('/:id', validateAdmin, productsController.deleteProduct);
+productsRouter.delete('/:id', productsController.deleteProduct);
 
 export default productsRouter;

@@ -1,0 +1,147 @@
+components:
+  parameters:
+    schemas:
+      addProduct:
+        type: object
+        required:
+          - title
+          - description
+          - code
+          - price
+          - status
+          - stock
+          - category
+        properties:
+          title:
+            type: string
+            description: Título del producto
+          description:
+            type: string
+            description: Descripción del producto
+          code:
+            type: string
+            description: Código del producto
+          price:
+            type: float
+            description: Precio del producto
+          status:
+            type: boolean
+            description: Estatus del producto
+          stock:
+            type: int
+            description: Cantidad de productos
+          category:
+            type: string
+            description: Categoría del producto
+          thumbnail:
+            type: array
+            description: Arreglo de urls de imagen
+          owner:
+            type: string
+            description: Propietario del producto, por defecto admin
+        example:
+          id: 1
+          title: Pantalla
+          description: Pantalla de plasma
+          code: SOY2035
+          price: 300
+          status: false
+          stock: 50
+          category: Electronics
+          thumbnail: []
+      updateProduct:
+        type: object
+        required:
+          - title
+          - description
+          - code
+          - price
+          - status
+          - stock
+          - category
+        properties:
+          title:
+            type: string
+            description: Título del producto
+          description:
+            type: string
+            description: Descripción del producto
+          code:
+            type: string
+            description: Código del producto
+          price:
+            type: float
+            description: Precio del producto
+          status:
+            type: boolean
+            description: Estatus del producto
+          stock:
+            type: int
+            description: Cantidad de productos
+          category:
+            type: string
+            description: Categoría del producto
+          thumbnail:
+            type: array
+            description: Arreglo de urls de imagen
+          owner:
+            type: string
+            description: Propietario del producto, por defecto admin
+        example:
+          id: 1
+          title: Pantalla
+          description: Pantalla de plasma
+          code: SOY2035
+          price: 300
+          status: false
+          stock: 50
+          category: Electronics
+          thumbnail: []
+      deleteProduct:
+        type: string
+      delCart:
+        type: string
+      updateProductsInCart:
+        type: object
+        properties:
+          products:
+            type: array
+            items:
+              properties:
+                title:
+                  type: string
+                  description: Título del producto
+                description:
+                  type: string
+                  description: Descripción del producto
+                code:
+                  type: string
+                  description: Código del producto
+                price:
+                  type: float
+                  description: Precio del producto
+                status:
+                  type: boolean
+                  description: Estatus del producto
+                stock:
+                  type: int
+                  description: Cantidad de productos
+                category:
+                  type: string
+                  description: Categoría del producto
+                thumbnail:
+                  type: array
+                  description: Arreglo de urls de imagen
+                owner:
+                  type: string
+                  description: Propietario del producto, por defecto admin
+              example:
+                id: 1
+                title: Pantalla
+                description: Pantalla de plasma
+                code: SOY2035
+                price: 300
+                status: false
+                stock: 50
+                category: Electronics
+                thumbnail: []

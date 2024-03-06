@@ -1,0 +1,219 @@
+components:
+  schema:
+    Products:
+      addProduct:
+        type: object
+        properties:
+          title:
+            type: string
+            description: Título del producto
+          description:
+            type: string
+            description: Descripción del producto
+          code:
+            type: string
+            description: Código del producto
+          price:
+            type: float
+            description: Precio del producto
+          status:
+            type: boolean
+            description: Estatus del producto
+          stock:
+            type: int
+            description: Cantidad de productos
+          category:
+            type: string
+            description: Categoría del producto
+          thumbnail:
+            type: array
+            description: Arreglo de urls de imagen
+          owner:
+            type: string
+            description: Propietario del producto, por defecto admin
+        example:
+          id: 1
+          title: Pantalla
+          description: Pantalla de plasma
+          code: SOY2035
+          price: 300
+          status: false
+          stock: 50
+          category: Electronics
+          thumbnail: []
+      getAllProducts:
+        type: array
+        items:
+          properties:
+            title:
+              type: string
+              description: Título del producto
+            description:
+              type: string
+              description: Descripción del producto
+            code:
+              type: string
+              description: Código del producto
+            price:
+              type: float
+              description: Precio del producto
+            status:
+              type: boolean
+              description: Estatus del producto
+            stock:
+              type: int
+              description: Cantidad de productos
+            category:
+              type: string
+              description: Categoría del producto
+            thumbnail:
+              type: array
+              description: Arreglo de urls de imagen
+            owner:
+              type: string
+              description: Propietario del producto, por defecto admin
+          example:
+            id: 1
+            title: Pantalla
+            description: Pantalla de plasma
+            code: SOY2035
+            price: 300
+            status: false
+            stock: 50
+            category: Electronics
+            thumbnail: []
+      getProductById:
+        type: object
+        properties:
+          title:
+            type: string
+            description: Título del producto
+          description:
+            type: string
+            description: Descripción del producto
+          code:
+            type: string
+            description: Código del producto
+          price:
+            type: float
+            description: Precio del producto
+          status:
+            type: boolean
+            description: Estatus del producto
+          stock:
+            type: int
+            description: Cantidad de productos
+          category:
+            type: string
+            description: Categoría del producto
+          thumbnail:
+            type: array
+            description: Arreglo de urls de imagen
+          owner:
+            type: string
+            description: Propietario del producto, por defecto admin
+        example:
+          id: 1
+          title: Pantalla
+          description: Pantalla de plasma
+          code: SOY2035
+          price: 300
+          status: false
+          stock: 50
+          category: Electronics
+          thumbnail: []
+      updateProduct:
+        type: object
+        properties:
+          title:
+            type: string
+            description: Título del producto
+          description:
+            type: string
+            description: Descripción del producto
+          code:
+            type: string
+            description: Código del producto
+          price:
+            type: float
+            description: Precio del producto
+          status:
+            type: boolean
+            description: Estatus del producto
+          stock:
+            type: int
+            description: Cantidad de productos
+          category:
+            type: string
+            description: Categoría del producto
+          thumbnail:
+            type: array
+            description: Arreglo de urls de imagen
+          owner:
+            type: string
+            description: Propietario del producto, por defecto admin
+        example:
+          id: 1
+          title: Pantalla
+          description: Pantalla de plasma
+          code: SOY2035
+          price: 300
+          status: false
+          stock: 50
+          category: Electronics
+          thumbnail: []
+      deleteProduct:
+        type: string
+        properties:
+          message:
+            type: string
+            description: Producto borrado
+      ValidationSchemaError:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Validation schema error
+      NotFound:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Error de servidor
+      ErrorGetById:
+        type: object
+        properties:
+          message:
+            type: string
+            description: No se encontró el id en la base de datos
+    Carts:
+      createCart:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Carrito creado
+      getAllCarts:
+        type: array
+        items:
+          properties:
+            products:
+              type: array
+              description: Arreglo de productos en el carrito
+          example:
+            id: 1
+            products: []
+      delCart:
+        type: string
+        properties:
+          message:
+            type: string
+            description: Carrito borrado
+      updateProductsInCart:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Carrito actualizado
+        example:
+          msg: Carrito actualizado

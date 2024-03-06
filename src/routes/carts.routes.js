@@ -8,19 +8,19 @@ const cartsController = new CartsController();
 const ticketsController = new TicketsController();
 
 // Lectura de todos los carritos
-cartRouter.get('/', validateLogIn, cartsController.getAllCarts)
+cartRouter.get('/', cartsController.getAllCarts)
 // Lectura de un carrito
 cartRouter.get('/:cid', validateLogIn, cartsController.getCart);
 // Creación del carrito
-cartRouter.post('/', validateLogIn, cartsController.createCart);
+cartRouter.post('/', cartsController.createCart);
 // Agregar producto al carrito
 cartRouter.post('/:cid/product/:pid', validateLogIn, cartsController.addProductToCart);
 // Actualizar productos del carrito
-cartRouter.put('/:cid', validateLogIn, cartsController.updateProductsInCart);
+cartRouter.put('/:cid', cartsController.updateProductsInCart);
 // Actualizar cantidad de producto en carrito
 cartRouter.put('/:cid/products/:pid', validateLogIn, cartsController.updateQuantityProduct);
 // Borrar carrito
-cartRouter.delete('/:cid', validateLogIn, cartsController.delCart);
+cartRouter.delete('/:cid', cartsController.delCart);
 // Borrar todos los productos de un carrito
 cartRouter.delete('/:cid/products', validateLogIn, cartsController.delAllProducts);
 // Borrar un producto de un carrito

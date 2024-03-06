@@ -1,0 +1,236 @@
+paths:
+  /api/products:
+    post:
+      tags:
+      - Products
+      summary: Registro de un nuevo producto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/addProduct'
+        required: true
+      responses:
+          200:
+            description: Se registró la noticia correctamente
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/addProduct'
+          404:
+            description: error en validacion del body
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ValidationSchemaError'
+          500:
+            description: error en validacion del body
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/NotFound'
+    get:
+      tags:
+      - Products
+      summary: Lectura de todos los productos de la base de datos
+      responses:
+        200:
+          description: Obtiene la lista de todos los productos en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/getAllProducts'
+        404:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/NotFound'
+
+  /api/products/{id}:
+    get:
+      tags:
+      - Products
+      summary: Obtener un producto por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        200:
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/getProductById'
+        404:
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+    put:
+      tags:
+      - Products
+      summary: Editar producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/updateProduct'
+        required: true
+      responses:
+          200:
+            description: Producto actualizado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/updateProduct'
+          404:
+            description: No hay producto con id {id}
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ErrorGetById'   
+    delete:
+      tags:
+      - Products
+      summary: Borrar producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/deleteProduct'
+        required: false
+      responses:
+        200:
+          description: Producto borrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/deleteProduct'
+        404:
+          description: No hay producto con id {id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+  /api/carts:
+    post:
+      tags:
+      - Carts
+      summary: Creación de un carrito
+      responses:
+        200:
+          description: Carrito creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/createCart'
+        404:
+          description: No hay producto con id {id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+    get:
+      tags:
+      - Carts
+      summary: Obtener todos los carritos
+      responses:
+        200:
+          description: Muestra todos los carritos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/getAllCarts'
+        404:
+          description: No hay producto con id {id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+  /api/carts/{id}:
+    delete:
+      tags:
+      - Carts
+      summary: Borrar carrito
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/delCart'
+        required: false
+      responses:
+        200:
+          description: Carrito borrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/delCart'
+        404:
+          description: No hay carrito con id {id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+    put:
+      tags:
+      - Carts
+      summary: Actualizar productos del carrito
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/updateProductsInCart'
+        required: true
+      responses:
+          200:
+            description: Producto actualizado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Carts/updateProductsInCart'
+          404:
+            description: No hay producto con id {id}
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ErrorGetById' 

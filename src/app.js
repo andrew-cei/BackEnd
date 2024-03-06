@@ -9,6 +9,8 @@ import handlebars from 'express-handlebars';
 import cookieParser from 'cookie-parser';
 import MongoSotre from 'connect-mongo';
 import { Command } from 'commander';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
 // Bibliotecas propias
 import './dao/mongodb/Connection.js';
 import mailRouter from './routes/email.routes.js';
@@ -22,6 +24,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
 import './config/github-strategy.js';
 import { addDevLogger, addProdLogger } from './logger.js';
+import { info } from './docs/info.js';
 // Creación de variables
 const productsPath = "./src/data/productos.json";
 const mongoStoreOptions = {
@@ -56,6 +59,7 @@ mode === 'dev' ? addLogger = addDevLogger : addLogger = addProdLogger;
 // Configuración inicial
 const app = express()
 initMongoDB();
+const spects = swaggerJSDoc(info);
 
 // Motor de plantillas
 app.engine('handlebars', handlebars.engine());
@@ -63,6 +67,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
 // Configuración de Middlewares
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(spects));
 app.use(express.json());
 app.use(cookieParser("CoderS3cR3tC0D3"));
 app.use(express.static(__dirname + '/public'));
