@@ -54,7 +54,7 @@ async function updateProduct() {
 
 // Agregar producto al carrito
 async function addProductToCart(cid, pid) {
-    await fetch(`/api/carts/${cid}/product/${pid}`, { method: 'POST' });
+    await fetch(`/api/carts/${cid}/products/${pid}`, { method: 'POST' });
     // Actualiza el número de productos
     let counter = document.getElementById('counter');
     counter.innerHTML = parseInt(counter.innerHTML) + 1;
@@ -94,6 +94,89 @@ async function deleteProduct(pid) {
     });
 }
 
+// Editar usuario
+function editUser(uid) {
+    // Selección de elementos del formulario
+    let first_name = document.getElementById('first_name');
+    let last_name = document.getElementById('last_name');
+    let email = document.getElementById('email');
+    let passBlock = document.getElementById('pass-block');
+    let password = document.getElementById('password');
+    let age = document.getElementById('age');
+    // Actualización de elementos
+    let formTitleUser = document.getElementById('form_title_user');
+    let submitUser = document.getElementById('sbm-btn-usr');
+    formTitleUser.innerHTML = 'Editar usuario';
+    submitUser.innerHTML = 'Actualizar';
+    passBlock.style.display = "none";
+    // Actualización de datos del formulario
+    let user = document.getElementById(uid);
+    first_name.value = user.cells[1].innerHTML;
+    last_name.value = user.cells[2].innerHTML;
+    email.value = user.cells[3].innerHTML;
+    age.value = user.cells[4].innerHTML;
+    password.value = 'Dummy Password';
+    // Agregar el ID del producto a localstorage
+    localStorage.setItem('User Id', uid);
+}
+// Actualizar y agregar un usuario
+async function updateUser() {
+    // Selección de elementos del formulario
+    let first_name = document.getElementById('first_name');
+    let last_name = document.getElementById('last_name');
+    let email = document.getElementById('email');
+    let age = document.getElementById('age');
+    let password = document.getElementById('password');
+    let role = document.getElementById('role');
+    let rol = "user";
+    // Verificación de los datos
+    if (first_name.value === '' || last_name.value === '' || email.value === '' || role.value === '' || age.value === '' || password.value === '') {
+        Swal.fire('Llena todos los campos');
+    } else {
+        role.value === "true" ? rol = "premium" : rol = "user";
+        // Creación del objeto de datos
+        data = {
+            'first_name': first_name.value,
+            'last_name': last_name.value,
+            'email': email.value,
+            'age': age.value,
+            'role': rol
+        }
+        // Envío de datos al servidor
+        let uid = localStorage.getItem('User Id');
+        if (uid) {
+            localStorage.removeItem('User Id');
+            // Actualización del usuario    
+            await fetch(`/api/users/${uid}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+        } else {
+            // Creación del usuario
+            data.password = password.value;
+            await fetch(`/api/users/`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+        }
+        Swal.fire('Usuario actualizado').then( () => {
+            location.reload();
+        });
+    }
+}
+// Borrar usuario
+async function deleteUser(uid) {
+    await fetch(`/api/users/${uid}`, { method: 'DELETE' });
+    Swal.fire('Usuario borrado').then( () => {
+        location.reload();
+    });
+}
 // Realizar compra de productos
 async function buyProducts(cid) {
     let ticketObj = await fetch(`/api/carts/${cid}/purchase`, { method: 'POST' });

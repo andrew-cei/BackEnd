@@ -52,6 +52,16 @@ export default class ProductsDaoDB{
             console.log(error);
         }
     }
+    // Borrar todos los productos
+    async deleteProducts(){
+        try{
+            this.product = await productModel.deleteMany();
+            return this.product;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }    
     // Actualizar producto por ID
     async updateProduct(id,product){
         try{

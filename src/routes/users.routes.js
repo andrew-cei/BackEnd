@@ -1,21 +1,23 @@
 import { Router } from 'express';
-import { validateLogIn } from '../middlewares/validateMiddleware.js';
+import { validateAdmin } from "../middlewares/validateAdmin.js";
 import UsersController from '../controllers/users.controller.js';
 
 const userRouter = Router();
 const usersController = new UsersController();
 
-// Ruta para obtener todos usuarios
-userRouter.get('/', validateLogIn ,usersController.getAllUsers);
+// Ruta para obtener todos los usuarios
+userRouter.get('/', validateAdmin, usersController.getAllUsers);
 // Ruta para obtener un usuario
-userRouter.get('/:uid', validateLogIn, usersController.getUserById);
+userRouter.get('/:uid', validateAdmin, usersController.getUserById);
 // Ruta para crear usuario
-userRouter.post('/', usersController.createUser);
+userRouter.post('/', validateAdmin, usersController.createUser);
 // Actualización de usuario
-userRouter.put('/:uid', validateLogIn, usersController.updateUser)
-// Borrado de un usuario
-userRouter.delete('/:uid', validateLogIn, usersController.deleteUser);
+userRouter.put('/:uid', validateAdmin, usersController.updateUser)
 // Ruta para cambiar rol de usuario
-userRouter.put('/premium/:uid', usersController.changeRole);
+userRouter.put('/premium/:uid', validateAdmin, usersController.changeRole);
+// Borrado de un usuario
+userRouter.delete('/:uid', validateAdmin, usersController.deleteUser);
+// Borrado de usuarios inactivos
+userRouter.delete('/', validateAdmin, usersController.deleteInactiveUsers);
 
 export default userRouter;

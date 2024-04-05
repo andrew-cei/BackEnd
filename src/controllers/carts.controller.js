@@ -1,14 +1,16 @@
 import CartsServices from "../services/carts.services.js";
 import ProductService from "../services/products.services.js";
+import CartsDto from "../dto/Carts.Dto.js";
 
 const productService = new ProductService();
 const cartsServices = new CartsServices();
+const cartsDto = new CartsDto();
 
 export default class CartsController {
     // Obtener todos los carritos
     getAllCarts = async (req, res, next) => {
         try {
-            const response = await cartsServices.getAllCarts();
+            const response = await cartsDto.getAllCarts();
             res.status(200).json(response);
         } catch (error) {
             next(error.message);
@@ -18,7 +20,7 @@ export default class CartsController {
     getCart = async (req, res, next) => {
         try {
             const { cid } = req.params;
-            const response = await cartsServices.getCart(cid);
+            const response = await cartsDto.getCart(cid);
             if (!response) res.status(404).json({ msg: `Carrito ${id} no encontrado` });
             else res.status(200).json(response);
         } catch (error) {
@@ -28,7 +30,7 @@ export default class CartsController {
     // Crear un carrito
     createCart = async (req, res, next) => {
         try {
-            const response = await cartsServices.createCart();
+            const response = await cartsDto.createCart();
             if (!response) res.status(404).send('Carrito no creado');
             else res.status(200).json({ msg: 'Carrito creado' });
         } catch (error) {
@@ -41,7 +43,7 @@ export default class CartsController {
             let quantity;
             const { cid, pid } = req.params;
             const producto = await productService.getProductById(pid);
-            const carrito = await cartsServices.getCart(cid);
+            const carrito = await cartsDto.getCart(cid);
             if (!producto) res.status(404).send(`Producto ${pid} no encontrado`);
             if (!carrito) res.status(404).send(`Carrito ${cid} no encontrado`);
             else {
@@ -55,9 +57,9 @@ export default class CartsController {
                     }
                 });
                 if (existe) {
-                    response = await cartsServices.updateQuantityProduct(cid, pid, quantity + 1);
+                    response = await cartsDto.updateQuantityProduct(cid, pid, quantity + 1);
                 } else {
-                    response = await cartsServices.addProductToCart(cid, pid);
+                    response = await cartsDto.addProductToCart(cid, pid);
                 }
                 if (!response) res.status(404).send(`No se añadió ${pid} al carrito ${cid}`);
                 else res.status(200).json({ msg: `Carrito ${cid} actualizado` });
@@ -77,7 +79,7 @@ export default class CartsController {
             products.forEach(async element => {
                 if (!codes.includes(element._id)) {
                     element.quantity = 1;
-                    codes.push(element._id);
+                    codes.push(element.id);
                     // Se guarda el producto no repetido
                     productos.push(element);
                     // Se guarda el nuevo producto
@@ -89,7 +91,7 @@ export default class CartsController {
                 }
             });
             console.log(productos)
-            const cart = await cartsServices.updateProductsInCart(cid, productos);
+            const cart = await cartsDto.updateProductsInCart(cid, productos);
             if (!cart) res.status(404).send(`Carrito ${cid} no actualizado`);
             else res.status(200).json({ msg: `Carrito ${cid} actualizado` });
         } catch (error) {
@@ -101,7 +103,7 @@ export default class CartsController {
         try {
             const { cid, pid } = req.params;
             const { quantity } = req.body;
-            const cart = await cartsServices.updateQuantityProduct(cid, pid, quantity);
+            const cart = await cartsDto.updateQuantityProduct(cid, pid, quantity);
             if (!cart) res.status(404).send(`Carrito ${cid} no actualizado`);
             else res.status(200).json({ msg: `Carrito ${cid} actualizado` });
         } catch (error) {

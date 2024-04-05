@@ -52,15 +52,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schema/Products/NotFound'
-
-  /api/products/{id}:
+    delete:
+      tags:
+      - Products
+      summary: Borrar totod los productos
+      responses:
+        200:
+          description: Productos borrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/deleteProduct'
+        404:
+          description: No hay producto con id {id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+  /api/products/mockingproducts:
+    get:
+      tags:
+      - Products
+      summary: Lectura de todos los productos generados aleatoriamente
+      responses:
+        200:
+          description: Obtiene la lista de todos los productos en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/getAllProducts'
+        404:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/NotFound'
+  /api/products/{pid}:
     get:
       tags:
       - Products
       summary: Obtener un producto por ID
       parameters:
         - in: path
-          name: id
+          name: pid
           required: true
           description: id del producto
           schema:
@@ -84,7 +124,7 @@ paths:
       summary: Editar producto
       parameters:
         - in: path
-          name: id
+          name: pid
           required: true
           description: La id es requerida
           schema:
@@ -103,7 +143,7 @@ paths:
                 schema:
                   $ref: '#/components/schema/Products/updateProduct'
           404:
-            description: No hay producto con id {id}
+            description: No hay producto con id {pid}
             content:
               application/json:
                 schema:
@@ -111,20 +151,14 @@ paths:
     delete:
       tags:
       - Products
-      summary: Borrar producto
+      summary: Borrar producto por ID
       parameters:
         - in: path
-          name: id
+          name: pid
           required: true
           description: La id es requerida
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/parameters/schemas/deleteProduct'
-        required: false
       responses:
         200:
           description: Producto borrado
@@ -173,14 +207,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schema/Products/ErrorGetById'
-  /api/carts/{id}:
+  /api/tickets:
+    get:
+      tags:
+      - Tickets
+      summary: Lectura de todos los tickets de la base de datos
+      responses:
+        200:
+          description: Obtiene la lista de todos los tickets en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Tickets/getAllTickets'
+        404:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/NotFound'  
+  /api/carts/{cid}:
+    get:
+      tags:
+      - Carts
+      summary: Obtener un carrito por ID
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+      responses:
+        200:
+          description: Carrito encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/getCartById'
+        404:
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'  
     delete:
       tags:
       - Carts
-      summary: Borrar carrito
+      summary: Borrar carrito por ID
       parameters:
         - in: path
-          name: id
+          name: cid
           required: true
           description: La id es requerida
           schema:
@@ -199,7 +281,7 @@ paths:
               schema:
                 $ref: '#/components/schema/Carts/delCart'
         404:
-          description: No hay carrito con id {id}
+          description: No hay carrito con id {cid}
           content:
             application/json:
               schema:
@@ -207,10 +289,10 @@ paths:
     put:
       tags:
       - Carts
-      summary: Actualizar productos del carrito
+      summary: Actualizar productos del carrito por ID
       parameters:
         - in: path
-          name: id
+          name: cid
           required: true
           description: La id es requerida
           schema:
@@ -229,8 +311,362 @@ paths:
                 schema:
                   $ref: '#/components/schema/Carts/updateProductsInCart'
           404:
-            description: No hay producto con id {id}
+            description: No hay producto con id {cid}
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schema/Products/ErrorGetById' 
+                  $ref: '#/components/schema/Products/ErrorGetById'
+  /api/carts/{cid}/products:
+    delete:
+      tags:
+      - Carts
+      summary: Borrar todos los productos de un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      responses:
+        200:
+          description: Se borran todos los productos del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/delAllProducts'
+        404:
+          description: No hay producto con id {cid}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+  /api/carts/{cid}/purchase:
+    post:
+      tags:
+      - Carts
+      summary: Comprar los productos del carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      responses:
+        200:
+          description: Se compraron los productos del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/purchase'
+        404:
+          description: No hay producto con id {cid}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'  
+  /api/carts/{cid}/products/{pid}:
+    post:
+      tags:
+      - Carts
+      summary: Agregar un producto a un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: id del producto a agregar
+          schema:
+            type: string     
+      responses:
+        200:
+          description: Carrito actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/addProductToCart'
+        404:
+          description: No hay carrito con id {cid}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+    put:
+      tags:
+      - Carts
+      summary: Actualizar la cantidad de un producto en un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: id del producto a actualizar
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/updateQuantityProduct'
+        required: true   
+      responses:
+        200:
+          description: Carrito actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/addProductToCart'
+        404:
+          description: No hay carrito con id {cid}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+    delete:
+      tags:
+      - Carts
+      summary: Borrar un producto de un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string            
+      responses:
+        200:
+          description: Se borró el producto del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Carts/delOneProducts'
+        404:
+          description: No hay producto con id {cid}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'
+  /api/users:
+    post:
+      tags:
+      - Users
+      summary: Registro de un nuevo usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/addUser'
+        required: true
+      responses:
+          200:
+            description: Se registró el usuario de forma correcta
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    result:
+                      type: string
+                      description: Mensaje de éxito
+                    payload:
+                      type: Array
+                      description: Resumen del usuario creado
+          404:
+            description: error en validacion del body
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ValidationSchemaError'
+          500:
+            description: error en validacion del body
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/NotFound'  
+    get:
+      tags:
+      - Users
+      summary: Lectura de todos los usuarios de la base de datos
+      responses:
+        200:
+          description: Obtiene la lista de todos los usuarios en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Users/getAllUsers'
+        404:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/NotFound'
+    delete:
+      tags:
+      - Users
+      summary: Borra los usuarios inactivos desde hace dos días
+      responses:
+        200:
+          description: Proporciona un mensaje de operación exitosa
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: mensaje de éxito
+                example:
+                  msg: Usuarios inactivos borrados
+        500:
+          description: error en validacion del body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/NotFound'
+  /api/users/{uid}:
+    get:
+      tags:
+      - Users
+      summary: Obtener un usuario por ID
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: id del usuario
+          schema:
+            type: string
+      responses:
+        200:
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Users/getUserById'
+        404:
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/Products/ErrorGetById'   
+    put:
+      tags:
+      - Users
+      summary: Actualizar usuario por ID
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/updateUser'
+        required: true
+      responses:
+          200:
+            description: Usuario actualizado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Users/updateUser'
+          404:
+            description: No hay producto con id {pid}
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ErrorGetById'
+    delete:
+      tags:
+      - Users
+      summary: Borrar usuario por ID
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      responses:
+          200:
+            description: Usuario borrado
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Mensaje de éxito
+                    payload:
+                      type: object
+                      description: Objeto de confirmación de Mongo.
+                  example:
+                    status: success
+                    payload: {}
+          404:
+            description: No hay producto con id {pid}
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ErrorGetById'
+  /api/users/premium/{uid}:
+    put:
+      tags:
+      - Users
+      summary: Actualizar usuario a premium o viceversa por ID
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          description: La id es requerida
+          schema:
+            type: string
+      responses:
+          200:
+            description: Usuario actualizado
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Mensaje de éxito
+                    payload:
+                      type: object
+                      description: Objeto de confirmación de Mongo.
+                  example:
+                    status: success
+                    payload: {}
+          404:
+            description: No hay producto con id {pid}
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schema/Products/ErrorGetById'

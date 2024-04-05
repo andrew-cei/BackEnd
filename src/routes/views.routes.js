@@ -13,7 +13,7 @@ const viewsController = new ViewsController();
 // Acceso a login
 viewsRouter.get('/', viewsController.loginGet);
 // Prueba del logger
-viewsRouter.get('/loggerTest', viewsController.loggerTest);
+viewsRouter.get('/loggerTest', validateAdmin, viewsController.loggerTest);
 // Registro de usuario
 viewsRouter.get('/register', viewsController.registerGet);
 // Regenerar contraseña vista
@@ -25,7 +25,9 @@ viewsRouter.get('/changePass/:email', viewsController.changePassGet);
 // Generar nueva constraseña en base de datos
 viewsRouter.post('/changePass', viewsController.changePassPost);
 // Perfil de usuario con productos
-viewsRouter.get('/products', validateLogIn , viewsController.profile);
+viewsRouter.get('/profile', validateLogIn , viewsController.profile);
+// Perfil de administrador
+viewsRouter.get('/admin', validateAdmin, viewsController.admin);
 // Logout de usuario
 viewsRouter.get('/logout', viewsController.logoutGet);
 // Ruta hacia el registro de usuario

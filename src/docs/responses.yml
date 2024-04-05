@@ -168,6 +168,12 @@ components:
           message:
             type: string
             description: Producto borrado
+      deleteProducts:
+        type: string
+        properties:
+          message:
+            type: string
+            description: Productos borrados
       ValidationSchemaError:
         type: object
         properties:
@@ -217,3 +223,142 @@ components:
             description: Carrito actualizado
         example:
           msg: Carrito actualizado
+      getCartById:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Id del carrito
+          products:
+            type: array
+            description: Productos del carrito
+        example:
+          id: 1
+          products: []
+      addProductToCart:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Mensaje de éxito
+        example:
+          msg: "Carrito actualizado"
+      delAllProducts:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Mensaje de éxito
+        example:
+          msg: Se borraron los productos del carrito
+      delOneProducts:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Mensaje de éxito
+        example:
+          msg: Se borró el producto del carrito  
+      purchase:
+        type: object
+        properties:
+          code:
+            type: string
+            description: Código de transacción
+          purchase_datetime:
+            type: string
+            description: Fecha de compra
+          amount:
+            type: int
+            description: Costo de la compra
+          purchaser:
+            type: string
+            description: Usuario de la compra
+        example:
+          code: 17
+          purchase_datetime: "2024-04-05T06:03:54.728Z"
+          amount: 3000,
+          purchaser: "andrew@cienciaseingenieria.org"
+    Users:
+      getAllUsers:
+        type: array
+        items:
+          properties:
+            id:
+              type: string
+              description: Id de usuario
+            first_name:
+              type: string
+              description: Nombre del usuario
+            email:
+              type: string
+              description: Correo electrónico del usuario
+            role:
+              type: string
+              description: Rol del usuario (admin, premium, user)
+          example:
+            id: 1
+            first_name: Andrew
+            email: andrew@cienciaseingenieria.org
+            role: admin
+      getUserById:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Id de usuario
+          first_name:
+            type: string
+            description: Nombre del usuario
+          last_name:
+            type: string
+            description: Apellido del usuario            
+          email:
+            type: string
+            description: Correo electrónico del usuario
+          role:
+            type: string
+            description: Rol del usuario (admin, premium, user)
+        example:
+          id: 1
+          first_name: Andrew
+          email: andrew@cienciaseingenieria.org
+          role: admin
+      updateUser:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Mensaje de éxito
+          payload:
+            type: array
+            description: Objeto de confirmación de Mongo
+        example:
+          status: success
+          payload: {}
+    Tickets:
+      getAllTickets:
+        type: array
+        items:
+          properties:
+            id:
+              type: string
+              description: ID de la transacción
+            code:
+              type: string
+              description: Código de la transacción
+            purchase_datetime:
+              type: string
+              description: Fecha de la transacción
+            amount:
+              type: float
+              description: Precio de la transacción
+            purchaser:
+              type: string
+              description: Correo electrónico del comprador
+          example:
+            id: 1
+            code: 17
+            purchase_datetime: "2024-02-04T20:05:02.912Z"
+            amount: 1100
+            purchaser: amanda@cienciaseingenieria.org  

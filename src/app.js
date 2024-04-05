@@ -20,11 +20,13 @@ import prodsRouter from './routes/products.routes.js';
 import cartRouter from './routes/carts.routes.js';
 import viewsRouter from './routes/views.routes.js';
 import userRouter from './routes/users.routes.js';
+import ticketsRouter from './routes/tickets.routes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { MONGO_URL, initMongoDB } from './dao/mongodb/Connection.js';
 import './config/github-strategy.js';
 import { addDevLogger, addProdLogger } from './logger.js';
 import { info } from './docs/info.js';
+import { validateAdmin } from "./middlewares/validateAdmin.js";
 // Creación de variables
 const productsPath = "./src/data/productos.json";
 const mongoStoreOptions = {
@@ -67,7 +69,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
 // Configuración de Middlewares
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(spects));
 app.use(express.json());
 app.use(cookieParser("CoderS3cR3tC0D3"));
 app.use(express.static(__dirname + '/public'));
@@ -77,6 +78,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(addLogger);
+app.use('/docs', validateAdmin, swaggerUI.serve, swaggerUI.setup(spects));
 
 // Rutas principales
 app.use('/', viewsRouter);
@@ -84,6 +86,7 @@ app.use('/api', mailRouter);
 app.use('/api/products', prodsRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/users', userRouter);
+app.use('/api/tickets', ticketsRouter);
 app.use(errorHandler);
 
 // Configuraciónn del puerto 8080

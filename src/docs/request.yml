@@ -97,10 +97,6 @@ components:
           stock: 50
           category: Electronics
           thumbnail: []
-      deleteProduct:
-        type: string
-      delCart:
-        type: string
       updateProductsInCart:
         type: object
         properties:
@@ -145,3 +141,73 @@ components:
                 stock: 50
                 category: Electronics
                 thumbnail: []
+      updateQuantityProduct:
+        type: object
+        properties:
+          quantity:
+            type: int
+            description: Número de productos
+        example:
+          quantity: 1
+      addUser:
+        type: object
+        required:
+          - first_name
+          - last_name
+          - email
+          - age
+          - password
+        properties:
+          first_name:
+            type: string
+            description: Nombre del usuario
+          last_name:
+            type: string
+            description: Apellidos del usuario
+          email:
+            type: string
+            description: Correo electrónico del usuario
+          age:
+            type: int
+            description: Edad del usuario
+          password:
+            type: string
+            description: Contraseña del usuario
+          role:
+            type: string
+            description: Rol del usuario (admin, premium, user)
+        example:
+          first_name: Wanda
+          last_name: López
+          email: Wanda@cienciaseingenieria.org
+          age: 18
+          password: Wanda_Lopez_01
+          role: user
+      updateUser:
+        type: object
+        properties:
+          first_name:
+            type: string
+            description: Nombre del usuario
+          last_name:
+            type: string
+            description: Apellidos del usuario
+          email:
+            type: string
+            description: Correo electrónico del usuario
+          age:
+            type: int
+            description: Edad del usuario
+          password:
+            type: string
+            description: Contraseña del usuario
+          role:
+            type: string
+            description: Rol del usuario (admin, premium, user)
+        example:
+          first_name: Wanda
+          last_name: López Téllez
+          email: Wanda@cienciaseingenieria.org
+          age: 18
+          password: Wanda_Lopez_01
+          role: user      

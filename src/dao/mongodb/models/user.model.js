@@ -37,10 +37,18 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    documents: {
+        type: Array,
+        default: []
+    },
     lastRecovery: {
         type: Date,
         default: null
-    }
+    },
+    lastConnection: {
+        type: Date,
+        default: null
+    }    
 })
 
 // Exporta el modelo

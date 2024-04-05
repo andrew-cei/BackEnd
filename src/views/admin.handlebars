@@ -1,0 +1,190 @@
+<!-- Encabezado -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">My Ecommerce</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/admin">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/realtimeproducts">Realtime Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/docs" target="_blank">Documentos</a>
+        </li>    
+        <li class="nav-item">
+          <a class="nav-link" href="/loggerTest" target="_blank">Prueba del Logger</a>
+        </li>                
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true" id="counter">{{ total }}</a>
+        </li>        
+        <li class="nav-item">
+          <img src="/img/carrito.png" alt="Carrito de compras">
+        </li>
+      </ul>
+        <button class="btn btn-outline-primary" type="submit" onclick="location.href='/logout'">Salir</button>    
+    </div>
+  </div>
+</nav>
+
+<!-- Tabla de productos -->
+
+<div class="container">
+  <h2>Productos</h2>
+
+  <p>Hola {{first_name}} {{last_name}}</p>
+  <p>To rol es de: {{role}}</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Propietario</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Código</th>
+        <th>Stock</th>
+        <th>Editar</th>
+        <th>Borrar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr id="{{ this._id }}">
+          <td>{{ this._id }}</td>
+          <td>{{ this.title }}</td>
+          <td>{{ this.description }}</td>
+          <td>{{ this.owner }}</td>
+          <td>{{ this.category }}</td>
+          <td>${{ this.price }}</td>
+          <td>{{ this.code }}</td>
+          <td>{{ this.stock }}</td>
+          <td><button type="button" class="btn btn-secondary" onclick="editProduct('{{this._id}}')">Editar</button></td>
+          <td><button type="button" class="btn btn-danger" onclick="deleteProduct('{{this._id}}')">Borrar</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+<!-- Agregar o actualizar producto -->
+<div class="container">
+  <h2 id="form_title">Agregar un producto</h2>
+  <!-- Formulario simple que enviará una petición POST -->
+  <form action="" onsubmit="return false;" id="formulario-agregar-producto">
+    <div class="mb-3">
+      <label for="title" class="form-label">Nombre:</label>
+      <input id="title" type="text" name="title" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción:</label>
+      <input id="description" type="text" name="description" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="code"class="form-label"></label>Código:</label>
+      <input id="code" type="text" name="code" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="price" class="form-label">Precio:</label>
+      <input id="price" type="text" name="price" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="status" class="form-label">Status:</label>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="status">
+        <option value="true">Disponible</option>
+        <option value="false">No disponible</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoría:</label>
+      <input id="category" type="text" name="category" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="stock"class="form-label"></label>Stock:</label>
+      <input id="stock" type="text" name="stock" class="form-control"/>
+      <button type="submit" class="btn btn-primary" onclick="updateProduct()" id="sbm-btn">Agregar</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- Tabla de usuarios-->
+
+<div class="container">
+  <h2>Usuarios</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo</th>
+        <th>Edad</th>        
+        <th>Rol</th>
+        <th>Editar</th>
+        <th>Borrar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr id="{{ this.id }}">
+          <td>{{ this.id }}</td>
+          <td>{{ this.first_name }}</td>
+          <td>{{ this.last_name }}</td>
+          <td>{{ this.email }}</td>
+          <td>{{ this.age }}</td>
+          <td>{{ this.role }}</td>
+          <td><button type="button" class="btn btn-secondary" onclick="editUser('{{this.id}}')">Editar</button></td>
+          <td><button type="button" class="btn btn-danger" onclick="deleteUser('{{this.id}}')">Borrar</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+<!-- Agregar o actualizar usuario -->
+<div class="container">
+  <h2 id="form_title_user">Agregar un usuario</h2>
+  <!-- Formulario simple que enviará una petición POST -->
+  <form action="" onsubmit="return false;" id="formulario-agregar-usuario">
+    <div class="mb-3">
+      <label for="first_name" class="form-label">Nombre:</label>
+      <input id="first_name" type="text" name="first_name" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="last_name" class="form-label">Apellido:</label>
+      <input id="last_name" type="text" name="last_name" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="email"class="form-label"></label>Correo electrónico:</label>
+      <input id="email" type="email" name="email" class="form-control"/>
+    </div>    
+    <div class="mb-3">
+      <label for="age"class="form-label"></label>Edad:</label>
+      <input id="age" type="text" name="age" class="form-control"/>
+    </div>
+    <div class="mb-3" id="pass-block">
+      <label for="password"class="form-label"></label>Contraseña:</label>
+      <input id="password" type="password" name="password" class="form-control"/>
+    </div>        
+    <div class="mb-3">
+      <label for="role" class="form-label">Rol:</label>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="role">
+        <option value="false">Usuario estándar</option>
+        <option value="true">Usuario premium</option>
+      </select>
+    </div>
+      <button type="submit" class="btn btn-primary" onclick="updateUser()" id="sbm-btn-usr">Agregar</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- Lógica de programación -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/fetchApi.js"></script>

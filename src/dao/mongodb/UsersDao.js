@@ -8,7 +8,7 @@ export default class UsersDaoDB{
     // Obtener todos los usuarios
     async getUsers(){
         try {
-            this.users = await userModel.find();
+            this.users = await userModel.find().lean();
             return this.users;
         } catch (error) {
             console.log(error);
@@ -43,6 +43,7 @@ export default class UsersDaoDB{
     // Actualizar Usuario
     async updateUser(uid, user){
         try {
+            console.log(user)
             return await userModel.updateOne({ _id: uid }, user);
         } catch (error) {
             console.log(error);

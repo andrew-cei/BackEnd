@@ -1,5 +1,6 @@
 // Bibliotecas propias
 import UserServices from '../services/users.services.js';
+import UsersDto from '../dto/Users.Dto.js';
 import CartsServices from '../services/carts.services.js';
 import ProductsService from '../services/products.services.js';
 import { transporter } from '../services/email.service.js';
@@ -7,6 +8,7 @@ import config from '../../config.js';
 import { createHash, isValidPassword } from '../utils.js';
 
 const usersServices = new UserServices();
+const usersDto = new UsersDto();
 const cartsServices = new CartsServices();
 const productsService = new ProductsService();
 
@@ -15,6 +17,8 @@ export default class ViewsController{
     gitHubGet = async (req,res)=>{
         if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials" })
         const user = await usersServices.findUserByEmail(req.user.email);
+        // Actualiza la fecha de última conexión
+        await usersServices.updateUser(user._id, {"lastConnection": new Date()});
         let cart = await cartsServices.getCart(user.cart);
         if (user.cart === null || !cart){
             // Si el usuario no tiene carro, se crea uno
@@ -41,6 +45,8 @@ export default class ViewsController{
             return res.status(400).send({ status: "error", error: "Invalid credentials" });
         }
         const user = await usersServices.findUserByEmail(req.user.email);
+        // Actualiza la fecha de última conexión
+        await usersServices.updateUser(user._id, {"lastConnection": new Date()});
         let cart = await cartsServices.getCart(user.cart);
         if (user.cart === null || !cart){
             // Si el usuario no tiene carro, se crea uno
@@ -55,7 +61,11 @@ export default class ViewsController{
             role: user.role,
             cart: cart._id
         }
-        res.redirect('/products');
+        if (user.role === "admin"){
+            res.redirect('/admin');
+        } else {
+            res.redirect('/profile');
+        }
     }
     // Render de la página de logout
     logoutGet = (req, res) => {
@@ -66,12 +76,32 @@ export default class ViewsController{
     }
     // Render de la página de perfíl
     profile = async (req, res) => {
+        const { first_name, last_name, email, role, cart } = req.session.user;
+        const products = await productsService.getAllProducts();
+        const productsUser = [];
+        const productsPremium = [];
+        const isPremium = role === 'premium';
+        products.forEach((product) => {
+            // Si el producto fue creado por el usuario va en la lista premium
+            if(product.owner === email){
+                productsPremium.push(product);
+            }
+            // En caso contrario va a la lista de usuario
+            else {
+                productsUser.push(product);
+            }
+        })
+        const total = await this.totalProducts(cart);
+        res.render('home', { productsUser, productsPremium, first_name, last_name, role, cart, total, isPremium});
+    }    
+    // Render de la página de Admin
+    admin = async (req, res) => {
         const { first_name, last_name, role, cart } = req.session.user;        
         const products = await productsService.getAllProducts();
         const total = await this.totalProducts(cart);
-        const admin = role === 'admin';
-        res.render('home', { products, first_name, last_name, role, cart, total, admin});
-    }
+        const users = await usersDto.getAllUsers();
+        res.render('admin', { products, users, first_name, last_name, role, cart, total});
+    }    
     // Render de la página de registro
     registerGet = (req, res) => {
         res.render('register');

@@ -51,5 +51,14 @@ export default class ProductsServices{
             console.log(error);
         }
     }
-
+    // Borrar todos los productos
+    deleteProducts = async () => {
+        try {
+            const prodDel = await productsDao.deleteProducts();
+            if(!prodDel) return false;
+            else return prodDel;         
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
