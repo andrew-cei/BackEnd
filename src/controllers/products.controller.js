@@ -1,5 +1,5 @@
 import Product from "../dao/Product.js";
-import ProductsDto from "../dto/products.dto.js"
+import ProductsDto from "../dto/Products.Dto.js"
 import ProductsServices from "../services/products.services.js"
 import { generateProduct } from "../utils.js";
 import { transporter } from '../services/email.service.js';

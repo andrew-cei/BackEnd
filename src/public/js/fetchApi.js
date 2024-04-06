@@ -78,10 +78,10 @@ function editProduct(pid) {
     let product = document.getElementById(pid);
     title.value = product.cells[1].innerHTML;
     description.value = product.cells[2].innerHTML;
-    category.value = product.cells[3].innerHTML;
-    price.value = product.cells[4].innerHTML;
-    code.value = product.cells[5].innerHTML;
-    stock.value = product.cells[6].innerHTML;
+    category.value = product.cells[4].innerHTML;
+    price.value = product.cells[5].innerHTML;
+    code.value = product.cells[6].innerHTML;
+    stock.value = product.cells[7].innerHTML;
     // Agregar el ID del producto a localstorage
     localStorage.setItem('Product Id', pid);
 }
